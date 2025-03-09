@@ -17,38 +17,38 @@ const Services = () => {
   const servicesList = [
     {
       icon: <Truck className="h-12 w-12 text-primary" />,
-      title: "Transportation Services",
-      description: "Access our wide network of vehicles to transport your goods safely and efficiently across the region."
+      title: "Services de Transport",
+      description: "Accédez à notre vaste réseau de véhicules pour transporter vos marchandises en toute sécurité et efficacité dans toute la région."
     },
     {
       icon: <Package className="h-12 w-12 text-primary" />,
-      title: "Pallet Logistics",
-      description: "Specialized solutions for pallet transportation with careful handling and tracking throughout the journey."
+      title: "Logistique de Palettes",
+      description: "Solutions spécialisées pour le transport de palettes avec une manipulation soignée et un suivi tout au long du trajet."
     },
     {
       icon: <Clock className="h-12 w-12 text-primary" />,
-      title: "Express Delivery",
-      description: "Urgent deliveries made simple with our priority transport services and dedicated vehicles."
+      title: "Livraison Express",
+      description: "Livraisons urgentes simplifiées avec nos services de transport prioritaires et nos véhicules dédiés."
     },
     {
       icon: <HandCoins className="h-12 w-12 text-primary" />,
-      title: "Competitive Pricing",
-      description: "Transparent and fair pricing with no hidden costs. Pay only for what you need."
+      title: "Tarification Compétitive",
+      description: "Tarification transparente et équitable sans frais cachés. Payez uniquement pour ce dont vous avez besoin."
     },
     {
       icon: <BarChart3 className="h-12 w-12 text-primary" />,
-      title: "Logistics Analytics",
-      description: "Gain insights into your logistics operations with detailed reports and performance metrics."
+      title: "Analyse Logistique",
+      description: "Obtenez des informations sur vos opérations logistiques avec des rapports détaillés et des indicateurs de performance."
     },
     {
       icon: <RefreshCcw className="h-12 w-12 text-primary" />,
-      title: "Flexible Scheduling",
-      description: "Book transport when you need it, with options for recurring schedules or on-demand service."
+      title: "Planification Flexible",
+      description: "Réservez le transport quand vous en avez besoin, avec des options pour des horaires récurrents ou un service à la demande."
     },
     {
       icon: <ShieldCheck className="h-12 w-12 text-primary" />,
-      title: "Insurance Coverage",
-      description: "Peace of mind with comprehensive insurance for your goods during transportation."
+      title: "Couverture d'Assurance",
+      description: "Tranquillité d'esprit avec une assurance complète pour vos marchandises pendant le transport."
     }
   ];
 
@@ -58,11 +58,11 @@ const Services = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <Badge variant="outline" className="px-4 py-1 text-sm bg-primary/10 text-primary border-primary/20 mb-4">
-              Our Services
+              Nos Services
             </Badge>
-            <h1 className="text-4xl font-bold mb-6">Comprehensive Transport Solutions</h1>
+            <h1 className="text-4xl font-bold mb-6">Solutions de Transport Complètes</h1>
             <p className="text-lg text-muted-foreground">
-              We offer a wide range of services designed to meet all your logistics and transportation needs at Rungis Market.
+              Nous offrons une large gamme de services conçus pour répondre à tous vos besoins logistiques et de transport au Marché de Rungis.
             </p>
           </div>
 
