@@ -7,13 +7,13 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { motion } from 'framer-motion';
 
-type AuthFormProps = {
-  mode?: 'login' | 'signup';
+export type AuthFormProps = {
+  type?: 'login' | 'signup';
 };
 
-export const AuthForm: React.FC<AuthFormProps> = ({ mode = 'login' }) => {
+export const AuthForm: React.FC<AuthFormProps> = ({ type = 'login' }) => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<string>(mode);
+  const [activeTab, setActiveTab] = useState<string>(type);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   
   const [loginData, setLoginData] = useState({
@@ -75,8 +75,8 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode = 'login' }) => {
       >
         <Tabs defaultValue={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid grid-cols-2 w-full mb-6">
-            <TabsTrigger value="login">Login</TabsTrigger>
-            <TabsTrigger value="signup">Sign up</TabsTrigger>
+            <TabsTrigger value="login">Connexion</TabsTrigger>
+            <TabsTrigger value="signup">Inscription</TabsTrigger>
           </TabsList>
           
           <TabsContent value="login">
@@ -87,7 +87,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode = 'login' }) => {
                   id="login-email"
                   name="email"
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder="Entrez votre email"
                   value={loginData.email}
                   onChange={handleLoginChange}
                   required
@@ -96,16 +96,16 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode = 'login' }) => {
               
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="login-password">Password</Label>
+                  <Label htmlFor="login-password">Mot de passe</Label>
                   <Button variant="link" className="p-0 h-auto text-sm" onClick={() => navigate('/forgot-password')}>
-                    Forgot password?
+                    Mot de passe oublié?
                   </Button>
                 </div>
                 <Input
                   id="login-password"
                   name="password"
                   type="password"
-                  placeholder="Enter your password"
+                  placeholder="Entrez votre mot de passe"
                   value={loginData.password}
                   onChange={handleLoginChange}
                   required
@@ -117,7 +117,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode = 'login' }) => {
                 className="w-full" 
                 disabled={isLoading}
               >
-                {isLoading ? 'Logging in...' : 'Log in'}
+                {isLoading ? 'Connexion en cours...' : 'Se connecter'}
               </Button>
               
               <div className="relative my-6">
@@ -125,7 +125,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode = 'login' }) => {
                   <div className="w-full border-t border-border"></div>
                 </div>
                 <div className="relative flex justify-center text-xs">
-                  <span className="bg-white px-2 text-muted-foreground">or continue with</span>
+                  <span className="bg-white px-2 text-muted-foreground">ou continuer avec</span>
                 </div>
               </div>
               
@@ -165,11 +165,11 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode = 'login' }) => {
           <TabsContent value="signup">
             <form onSubmit={handleSignupSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="signup-name">Full Name</Label>
+                <Label htmlFor="signup-name">Nom complet</Label>
                 <Input
                   id="signup-name"
                   name="name"
-                  placeholder="Enter your name"
+                  placeholder="Entrez votre nom"
                   value={signupData.name}
                   onChange={handleSignupChange}
                   required
@@ -182,7 +182,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode = 'login' }) => {
                   id="signup-email"
                   name="email"
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder="Entrez votre email"
                   value={signupData.email}
                   onChange={handleSignupChange}
                   required
@@ -190,12 +190,12 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode = 'login' }) => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="signup-password">Password</Label>
+                <Label htmlFor="signup-password">Mot de passe</Label>
                 <Input
                   id="signup-password"
                   name="password"
                   type="password"
-                  placeholder="Create a password"
+                  placeholder="Créez un mot de passe"
                   value={signupData.password}
                   onChange={handleSignupChange}
                   required
@@ -203,12 +203,12 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode = 'login' }) => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="signup-confirm-password">Confirm Password</Label>
+                <Label htmlFor="signup-confirm-password">Confirmer le mot de passe</Label>
                 <Input
                   id="signup-confirm-password"
                   name="confirmPassword"
                   type="password"
-                  placeholder="Confirm your password"
+                  placeholder="Confirmez votre mot de passe"
                   value={signupData.confirmPassword}
                   onChange={handleSignupChange}
                   required
@@ -216,7 +216,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode = 'login' }) => {
               </div>
               
               <div className="space-y-2">
-                <Label>Account Type</Label>
+                <Label>Type de compte</Label>
                 <div className="grid grid-cols-2 gap-2">
                   <Button
                     type="button"
@@ -224,7 +224,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode = 'login' }) => {
                     className="w-full"
                     onClick={() => handleAccountTypeChange('rungis')}
                   >
-                    Rungis Company
+                    Entreprise Rungis
                   </Button>
                   <Button
                     type="button"
@@ -232,7 +232,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode = 'login' }) => {
                     className="w-full"
                     onClick={() => handleAccountTypeChange('transport')}
                   >
-                    Transport Provider
+                    Transporteur
                   </Button>
                 </div>
               </div>
@@ -242,17 +242,17 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode = 'login' }) => {
                 className="w-full" 
                 disabled={isLoading}
               >
-                {isLoading ? 'Creating account...' : 'Create account'}
+                {isLoading ? 'Création du compte...' : 'Créer un compte'}
               </Button>
               
               <div className="text-center text-sm text-muted-foreground">
-                By signing up, you agree to our{' '}
+                En vous inscrivant, vous acceptez nos{' '}
                 <Button variant="link" className="p-0 h-auto text-sm" onClick={() => navigate('/terms')}>
-                  Terms of Service
+                  Conditions d'utilisation
                 </Button>{' '}
-                and{' '}
+                et{' '}
                 <Button variant="link" className="p-0 h-auto text-sm" onClick={() => navigate('/privacy')}>
-                  Privacy Policy
+                  Politique de confidentialité
                 </Button>
               </div>
             </form>
