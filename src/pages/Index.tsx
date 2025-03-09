@@ -12,51 +12,51 @@ const Index = () => {
   const benefits = [
     {
       icon: <Truck className="h-10 w-10 text-primary" />,
-      title: 'Flotte Diverse',
-      description: 'Accès à une large gamme de véhicules pour tous vos besoins de transport.'
+      title: 'Diverse Fleet',
+      description: 'Access to a wide range of vehicles for all your transportation needs.'
     },
     {
       icon: <Repeat className="h-10 w-10 text-primary" />,
-      title: 'Processus Simple',
-      description: 'Réservez votre transport en quelques minutes avec notre système de réservation simplifié.'
+      title: 'Simple Process',
+      description: 'Book your transport in minutes with our streamlined booking system.'
     },
     {
       icon: <Clock className="h-10 w-10 text-primary" />,
-      title: 'Suivi en Temps Réel',
-      description: 'Suivez votre expédition avec des mises à jour en temps réel et des notifications.'
+      title: 'Real-time Tracking',
+      description: 'Monitor your shipment with real-time updates and notifications.'
     },
     {
       icon: <Shield className="h-10 w-10 text-primary" />,
-      title: 'Sûr et Fiable',
-      description: 'Partenaires de transport vérifiés et couverture d'assurance pour votre tranquillité d'esprit.'
+      title: 'Secure & Reliable',
+      description: 'Verified transport partners and insurance coverage for peace of mind.'
     }
   ];
 
   return (
     <Layout fullWidth>
-      {/* Hero Section with reduced height */}
-      <section className="min-h-[80vh] flex items-center bg-gradient-to-br from-accent to-background overflow-hidden">
+      {/* Hero Section */}
+      <section className="relative min-h-[90vh] flex items-center bg-gradient-to-br from-accent to-background overflow-hidden">
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-pattern opacity-5"></div>
         </div>
         
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 z-10 py-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 z-10 py-20">
           <div className="flex flex-col items-center justify-center">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-              className="text-center max-w-2xl mb-8"
+              className="text-center max-w-2xl mb-12"
             >
               <Badge variant="outline" className="px-4 py-1 text-sm bg-primary/10 text-primary border-primary/20">
-                Solution de Transport Rungis
+                Rungis Transport Solution
               </Badge>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mt-4">
-                Réservation de transport moderne pour 
-                <span className="text-primary"> entreprises Rungis</span>
+                Modern transport booking for 
+                <span className="text-primary"> Rungis companies</span>
               </h1>
               <p className="text-xl text-muted-foreground max-w-2xl mt-6">
-                La façon la plus simple de se connecter avec des véhicules de transport. Réservez en quelques minutes et suivez votre expédition en temps réel.
+                The simplest way to connect with transport vehicles. Book in minutes and track your shipment in real-time.
               </p>
             </motion.div>
             
@@ -72,12 +72,12 @@ const Index = () => {
               </div>
             </motion.div>
             
-            <div className="flex flex-col sm:flex-row gap-4 pt-6 mt-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 pt-8 mt-6 justify-center">
               <Button size="lg" asChild>
-                <Link to="/signup">Commencer <ArrowRight className="ml-2 h-5 w-5" /></Link>
+                <Link to="/signup">Get Started <ArrowRight className="ml-2 h-5 w-5" /></Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
-                <Link to="/about">En savoir plus</Link>
+                <Link to="/about">Learn More</Link>
               </Button>
             </div>
           </div>
@@ -85,15 +85,15 @@ const Index = () => {
       </section>
       
       {/* Benefits Section */}
-      <section className="py-16 bg-background">
+      <section className="py-20 bg-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-12">
+          <div className="text-center max-w-3xl mx-auto mb-16">
             <Badge variant="outline" className="px-4 py-1 text-sm bg-primary/10 text-primary border-primary/20 mb-4">
-              Pourquoi Nous Choisir
+              Why Choose Us
             </Badge>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-6">Simplifier la logistique de transport pour votre entreprise</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-6">Simplifying transport logistics for your business</h2>
             <p className="text-lg text-muted-foreground">
-              Notre plateforme vous connecte avec des transporteurs fiables, rendant la gestion logistique sans effort.
+              Our platform connects you with reliable transport providers, making logistics management effortless.
             </p>
           </div>
           
@@ -119,15 +119,15 @@ const Index = () => {
       </section>
       
       {/* How It Works Section */}
-      <section className="py-16 bg-accent/50">
+      <section className="py-20 bg-accent/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-12">
+          <div className="text-center max-w-3xl mx-auto mb-16">
             <Badge variant="outline" className="px-4 py-1 text-sm bg-primary/10 text-primary border-primary/20 mb-4">
-              Comment Ça Marche
+              How It Works
             </Badge>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-6">Trois étapes simples pour commencer</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-6">Three simple steps to get started</h2>
             <p className="text-lg text-muted-foreground">
-              Notre processus simplifié rend la réservation de véhicules de transport rapide et sans tracas.
+              Our streamlined process makes booking transport vehicles quick and hassle-free.
             </p>
           </div>
           
@@ -135,18 +135,18 @@ const Index = () => {
             {[
               {
                 step: '01',
-                title: 'Rechercher',
-                description: 'Entrez vos détails de ramassage et de livraison, ainsi que les spécifications de votre cargaison.'
+                title: 'Search',
+                description: 'Enter your pickup and delivery details, along with your cargo specifications.'
               },
               {
                 step: '02',
-                title: 'Sélectionner',
-                description: 'Parcourez les véhicules disponibles et choisissez celui qui répond le mieux à vos besoins.'
+                title: 'Select',
+                description: 'Browse available vehicles and choose the one that best meets your requirements.'
               },
               {
                 step: '03',
-                title: 'Réserver',
-                description: 'Confirmez vos détails de réservation et suivez votre expédition en temps réel.'
+                title: 'Book',
+                description: 'Confirm your booking details and track your shipment in real-time.'
               }
             ].map((item, index) => (
               <motion.div
@@ -168,28 +168,28 @@ const Index = () => {
             ))}
           </div>
           
-          <div className="text-center mt-10">
+          <div className="text-center mt-12">
             <Button size="lg" asChild>
-              <Link to="/search-results">Trouver un Véhicule Maintenant <ArrowRight className="ml-2 h-5 w-5" /></Link>
+              <Link to="/search-results">Find a Vehicle Now <ArrowRight className="ml-2 h-5 w-5" /></Link>
             </Button>
           </div>
         </div>
       </section>
       
       {/* CTA Section */}
-      <section className="py-16 bg-primary text-primary-foreground">
+      <section className="py-20 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-6">Prêt à transformer votre logistique?</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-6">Ready to transform your logistics?</h2>
             <p className="text-xl mb-8 text-primary-foreground/80">
-              Rejoignez des milliers d'entreprises Rungis qui utilisent déjà notre plateforme pour optimiser leurs opérations de transport.
+              Join thousands of Rungis companies already using our platform to streamline their transport operations.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" variant="secondary" asChild>
-                <Link to="/signup">Créer un Compte</Link>
+                <Link to="/signup">Create Account</Link>
               </Button>
               <Button size="lg" variant="outline" className="border-white/20 hover:bg-white/10" asChild>
-                <Link to="/contact">Contacter les Ventes</Link>
+                <Link to="/contact">Contact Sales</Link>
               </Button>
             </div>
           </div>
