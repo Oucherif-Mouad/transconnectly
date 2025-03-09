@@ -41,35 +41,27 @@ const Index = () => {
         </div>
         
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 z-10 py-20">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="flex flex-col items-center justify-center">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-              className="space-y-6"
+              className="text-center max-w-2xl mb-12"
             >
               <Badge variant="outline" className="px-4 py-1 text-sm bg-primary/10 text-primary border-primary/20">
                 Rungis Transport Solution
               </Badge>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mt-4">
                 Modern transport booking for 
                 <span className="text-primary"> Rungis companies</span>
               </h1>
-              <p className="text-xl text-muted-foreground max-w-2xl">
+              <p className="text-xl text-muted-foreground max-w-2xl mt-6">
                 The simplest way to connect with transport vehicles. Book in minutes and track your shipment in real-time.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <Button size="lg" asChild>
-                  <Link to="/signup">Get Started <ArrowRight className="ml-2 h-5 w-5" /></Link>
-                </Button>
-                <Button size="lg" variant="outline" asChild>
-                  <Link to="/about">Learn More</Link>
-                </Button>
-              </div>
             </motion.div>
             
             <motion.div
-              className="relative"
+              className="w-full max-w-4xl mx-auto"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.3, ease: [0.23, 1, 0.32, 1] }}
@@ -79,6 +71,15 @@ const Index = () => {
                 <SearchForm />
               </div>
             </motion.div>
+            
+            <div className="flex flex-col sm:flex-row gap-4 pt-8 mt-6 justify-center">
+              <Button size="lg" asChild>
+                <Link to="/signup">Get Started <ArrowRight className="ml-2 h-5 w-5" /></Link>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <Link to="/about">Learn More</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </section>
