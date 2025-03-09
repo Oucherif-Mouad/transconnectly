@@ -18,9 +18,9 @@ export const Navbar = () => {
   };
 
   const navLinks = [
-    { name: 'Accueil', href: '/' },
+    { name: 'Home', href: '/' },
     { name: 'Services', href: '/services' },
-    { name: 'À Propos', href: '/about' },
+    { name: 'About', href: '/about' },
     { name: 'Contact', href: '/contact' },
   ];
 
@@ -73,10 +73,10 @@ export const Navbar = () => {
           {/* CTA Buttons */}
           <div className="hidden md:flex md:items-center md:space-x-4">
             <Button variant="outline" asChild>
-              <Link to="/login">Connexion</Link>
+              <Link to="/login">Log in</Link>
             </Button>
             <Button asChild>
-              <Link to="/signup">Inscription</Link>
+              <Link to="/signup">Sign up</Link>
             </Button>
           </div>
 
@@ -88,7 +88,7 @@ export const Navbar = () => {
               aria-expanded={isOpen}
               onClick={toggleMenu}
             >
-              <span className="sr-only">{isOpen ? 'Fermer le menu' : 'Ouvrir le menu'}</span>
+              <span className="sr-only">{isOpen ? 'Close menu' : 'Open menu'}</span>
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
@@ -119,10 +119,10 @@ export const Navbar = () => {
               <div className="pt-4 pb-3 border-t border-border">
                 <div className="flex flex-col space-y-3 px-3">
                   <Button variant="outline" asChild className="justify-center w-full">
-                    <Link to="/login" onClick={closeMenu}>Connexion</Link>
+                    <Link to="/login" onClick={closeMenu}>Log in</Link>
                   </Button>
                   <Button asChild className="justify-center w-full">
-                    <Link to="/signup" onClick={closeMenu}>Inscription</Link>
+                    <Link to="/signup" onClick={closeMenu}>Sign up</Link>
                   </Button>
                 </div>
               </div>
