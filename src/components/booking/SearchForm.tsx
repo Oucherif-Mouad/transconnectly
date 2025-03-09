@@ -57,11 +57,11 @@ const SearchForm = () => {
   };
 
   const vehicleTypes = [
-    { value: 'van', label: 'Van' },
-    { value: 'light_truck', label: 'Light Truck' },
-    { value: 'medium_truck', label: 'Medium Truck' },
-    { value: 'heavy_truck', label: 'Heavy Truck' },
-    { value: 'refrigerated', label: 'Refrigerated Truck' }
+    { value: 'van', label: 'Fourgon' },
+    { value: 'light_truck', label: 'Camion Léger' },
+    { value: 'medium_truck', label: 'Camion Moyen' },
+    { value: 'heavy_truck', label: 'Poids Lourd' },
+    { value: 'refrigerated', label: 'Camion Frigorifique' }
   ];
 
   return (
@@ -76,7 +76,7 @@ const SearchForm = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div className="space-y-2">
               <Label htmlFor="startPoint" className="text-sm font-medium flex items-center gap-2">
-                <MapPin className="h-4 w-4 text-primary" /> Starting Point
+                <MapPin className="h-4 w-4 text-primary" /> Point de Départ
               </Label>
               <div className="relative">
                 <Input
@@ -84,7 +84,7 @@ const SearchForm = () => {
                   name="startPoint"
                   value={formData.startPoint}
                   onChange={handleInputChange}
-                  placeholder="Enter pickup location"
+                  placeholder="Entrez le lieu de ramassage"
                   className="pl-10 transition-all"
                   required
                 />
@@ -94,7 +94,7 @@ const SearchForm = () => {
             
             <div className="space-y-2">
               <Label htmlFor="endPoint" className="text-sm font-medium flex items-center gap-2">
-                <MapPin className="h-4 w-4 text-primary" /> Ending Point
+                <MapPin className="h-4 w-4 text-primary" /> Point d'Arrivée
               </Label>
               <div className="relative">
                 <Input
@@ -102,7 +102,7 @@ const SearchForm = () => {
                   name="endPoint"
                   value={formData.endPoint}
                   onChange={handleInputChange}
-                  placeholder="Enter destination"
+                  placeholder="Entrez la destination"
                   className="pl-10 transition-all"
                   required
                 />
@@ -114,14 +114,14 @@ const SearchForm = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div className="space-y-2">
               <Label htmlFor="vehicleType" className="text-sm font-medium flex items-center gap-2">
-                <Truck className="h-4 w-4 text-primary" /> Vehicle Type
+                <Truck className="h-4 w-4 text-primary" /> Type de Véhicule
               </Label>
               <Select 
                 onValueChange={(value) => handleSelectChange(value, 'vehicleType')}
                 required
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select vehicle type" />
+                  <SelectValue placeholder="Sélectionnez le type de véhicule" />
                 </SelectTrigger>
                 <SelectContent>
                   {vehicleTypes.map((type) => (
@@ -135,7 +135,7 @@ const SearchForm = () => {
             
             <div className="space-y-2">
               <Label htmlFor="pallets" className="text-sm font-medium flex items-center gap-2">
-                <Package className="h-4 w-4 text-primary" /> Number of Pallets
+                <Package className="h-4 w-4 text-primary" /> Nombre de Palettes
               </Label>
               <div className="relative">
                 <Input
@@ -145,7 +145,7 @@ const SearchForm = () => {
                   min="1"
                   value={formData.pallets}
                   onChange={handleInputChange}
-                  placeholder="Enter number of pallets"
+                  placeholder="Entrez le nombre de palettes"
                   className="pl-10 transition-all"
                   required
                 />
@@ -168,11 +168,11 @@ const SearchForm = () => {
                     min="1"
                     value={formData.dimensions.x}
                     onChange={handleInputChange}
-                    placeholder="Width"
+                    placeholder="Largeur"
                     className="pl-6 transition-all"
                     required
                   />
-                  <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground font-medium">W:</span>
+                  <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground font-medium">L:</span>
                 </div>
                 <div className="relative">
                   <Input
@@ -182,11 +182,11 @@ const SearchForm = () => {
                     min="1"
                     value={formData.dimensions.y}
                     onChange={handleInputChange}
-                    placeholder="Length"
+                    placeholder="Longueur"
                     className="pl-6 transition-all"
                     required
                   />
-                  <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground font-medium">L:</span>
+                  <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground font-medium">Lo:</span>
                 </div>
                 <div className="relative">
                   <Input
@@ -196,7 +196,7 @@ const SearchForm = () => {
                     min="1"
                     value={formData.dimensions.z}
                     onChange={handleInputChange}
-                    placeholder="Height"
+                    placeholder="Hauteur"
                     className="pl-6 transition-all"
                     required
                   />
@@ -207,7 +207,7 @@ const SearchForm = () => {
             
             <div className="space-y-2">
               <Label htmlFor="weight" className="text-sm font-medium flex items-center gap-2">
-                <Scale className="h-4 w-4 text-primary" /> Total Weight (kg)
+                <Scale className="h-4 w-4 text-primary" /> Poids Total (kg)
               </Label>
               <div className="relative">
                 <Input
@@ -217,7 +217,7 @@ const SearchForm = () => {
                   min="1"
                   value={formData.weight}
                   onChange={handleInputChange}
-                  placeholder="Enter total weight"
+                  placeholder="Entrez le poids total"
                   className="pl-10 transition-all"
                   required
                 />
@@ -232,7 +232,7 @@ const SearchForm = () => {
               size="lg" 
               className="w-full sm:w-auto px-8 py-6 text-base font-medium animate-button"
             >
-              <Search className="mr-2 h-5 w-5" /> Search Vehicles
+              <Search className="mr-2 h-5 w-5" /> Rechercher des Véhicules
             </Button>
           </div>
         </form>
