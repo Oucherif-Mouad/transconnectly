@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { ArrowDown, Download, Wallet, ArrowRight, Calendar, Truck } from 'lucide-react';
+import { ArrowDown, Download, ArrowRight, Calendar, Truck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
@@ -35,6 +35,7 @@ const bookingTypeData = [
 ];
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const CHART_BLUE = '#0EA5E9'; // Updated to match theme blue
 
 // Dummy data for recent transactions
 const recentTransactions = [
@@ -81,7 +82,7 @@ const Earnings = () => {
                       <XAxis dataKey="month" />
                       <YAxis />
                       <Tooltip />
-                      <Bar dataKey="earnings" fill="#8884d8" />
+                      <Bar dataKey="earnings" fill={CHART_BLUE} />
                     </BarChart>
                   </ResponsiveContainer>
                 </CardContent>
@@ -138,7 +139,7 @@ const Earnings = () => {
                 </div>
                 <CardDescription>Vos dernières transactions</CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-0">
                 <div className="overflow-x-auto">
                   <table className="min-w-full leading-normal">
                     <thead>

@@ -12,10 +12,12 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
+import ClientDashboard from "./pages/dashboard/ClientDashboard";
 import Bookings from "./pages/dashboard/Bookings";
 import Vehicles from "./pages/dashboard/Vehicles";
 import Earnings from "./pages/dashboard/Earnings";
 import Settings from "./pages/dashboard/Settings";
+import { DashboardRouter } from "./components/dashboard/RoleBasedRouter";
 
 const queryClient = new QueryClient();
 
@@ -32,7 +34,7 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<DashboardRouter />} />
           <Route path="/dashboard/bookings" element={<Bookings />} />
           <Route path="/dashboard/vehicles" element={<Vehicles />} />
           <Route path="/dashboard/earnings" element={<Earnings />} />
