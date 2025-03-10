@@ -1,12 +1,25 @@
+
 import React from 'react';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, ArrowUp, Truck, CalendarCheck, CreditCard, Eye } from 'lucide-react';
+import { 
+  ArrowRight, 
+  ArrowUp, 
+  Truck, 
+  CalendarCheck, 
+  CreditCard, 
+  Eye, 
+  Check, 
+  Clock, 
+  AlertTriangle, 
+  ChevronRight
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, AreaChart, Area } from 'recharts';
 
 // Dummy data
 const metricsData = {
@@ -29,6 +42,27 @@ const metricsData = {
     completed: 298
   }
 };
+
+// Chart data
+const bookingTrendsData = [
+  { day: 'Lun', bookings: 4 },
+  { day: 'Mar', bookings: 6 },
+  { day: 'Mer', bookings: 8 },
+  { day: 'Jeu', bookings: 7 },
+  { day: 'Ven', bookings: 12 },
+  { day: 'Sam', bookings: 5 },
+  { day: 'Dim', bookings: 3 },
+];
+
+const earningsTrendData = [
+  { day: 'Lun', earnings: 420 },
+  { day: 'Mar', earnings: 580 },
+  { day: 'Mer', earnings: 750 },
+  { day: 'Jeu', earnings: 620 },
+  { day: 'Ven', earnings: 1100 },
+  { day: 'Sam', earnings: 450 },
+  { day: 'Dim', earnings: 280 },
+];
 
 const upcomingBookings = [
   {
@@ -103,14 +137,14 @@ const Dashboard = () => {
       <Tabs defaultValue="daily" className="mb-8">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-3xl font-bold">Tableau de Bord</h2>
-          <TabsList>
-            <TabsTrigger value="daily">Aujourd'hui</TabsTrigger>
-            <TabsTrigger value="weekly">Cette Semaine</TabsTrigger>
-            <TabsTrigger value="monthly">Ce Mois</TabsTrigger>
+          <TabsList className="bg-background border">
+            <TabsTrigger value="daily" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Aujourd'hui</TabsTrigger>
+            <TabsTrigger value="weekly" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Cette Semaine</TabsTrigger>
+            <TabsTrigger value="monthly" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Ce Mois</TabsTrigger>
           </TabsList>
         </div>
         
-        <TabsContent value="daily" className="space-y-0">
+        <TabsContent value="daily" className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <MetricCard 
               title="Réservations" 
@@ -137,14 +171,60 @@ const Dashboard = () => {
             <MetricCard 
               title="Terminées" 
               value={metricsData.daily.completed} 
-              icon={<CalendarCheck className="h-5 w-5" />} 
+              icon={<Check className="h-5 w-5" />} 
               description="Réservations terminées"
               trend="+15%"
             />
           </div>
+          
+          {/* Charts Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg">Tendance des Réservations</CardTitle>
+                <CardDescription>Nombre de réservations par jour</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={200}>
+                  <BarChart data={bookingTrendsData}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="day" axisLine={false} tickLine={false} />
+                    <YAxis axisLine={false} tickLine={false} />
+                    <Tooltip />
+                    <Bar dataKey="bookings" fill="#8884d8" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg">Revenus Journaliers</CardTitle>
+                <CardDescription>Revenus générés par jour (€)</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={200}>
+                  <AreaChart data={earningsTrendData}>
+                    <defs>
+                      <linearGradient id="colorEarnings" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="#82ca9d" stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="day" axisLine={false} tickLine={false} />
+                    <YAxis axisLine={false} tickLine={false} />
+                    <Tooltip />
+                    <Area type="monotone" dataKey="earnings" stroke="#82ca9d" fillOpacity={1} fill="url(#colorEarnings)" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
         
-        <TabsContent value="weekly" className="space-y-0">
+        <TabsContent value="weekly" className="space-y-4">
+          {/* Weekly metrics - same structure as daily but with weekly data */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <MetricCard 
               title="Réservations" 
@@ -170,14 +250,60 @@ const Dashboard = () => {
             <MetricCard 
               title="Terminées" 
               value={metricsData.weekly.completed} 
-              icon={<CalendarCheck className="h-5 w-5" />} 
+              icon={<Check className="h-5 w-5" />} 
               description="Réservations terminées"
               trend="+10%"
             />
           </div>
+          
+          {/* Weekly Charts - can be the same as daily for this example */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg">Tendance des Réservations</CardTitle>
+                <CardDescription>Nombre de réservations par jour cette semaine</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={200}>
+                  <BarChart data={bookingTrendsData}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="day" axisLine={false} tickLine={false} />
+                    <YAxis axisLine={false} tickLine={false} />
+                    <Tooltip />
+                    <Bar dataKey="bookings" fill="#8884d8" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg">Revenus Hebdomadaires</CardTitle>
+                <CardDescription>Revenus générés par jour cette semaine (€)</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={200}>
+                  <AreaChart data={earningsTrendData}>
+                    <defs>
+                      <linearGradient id="colorEarningsWeekly" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="#82ca9d" stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="day" axisLine={false} tickLine={false} />
+                    <YAxis axisLine={false} tickLine={false} />
+                    <Tooltip />
+                    <Area type="monotone" dataKey="earnings" stroke="#82ca9d" fillOpacity={1} fill="url(#colorEarningsWeekly)" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
         
-        <TabsContent value="monthly" className="space-y-0">
+        <TabsContent value="monthly" className="space-y-4">
+          {/* Monthly metrics */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <MetricCard 
               title="Réservations" 
@@ -203,10 +329,55 @@ const Dashboard = () => {
             <MetricCard 
               title="Terminées" 
               value={metricsData.monthly.completed} 
-              icon={<CalendarCheck className="h-5 w-5" />} 
+              icon={<Check className="h-5 w-5" />} 
               description="Réservations terminées"
               trend="+28%"
             />
+          </div>
+          
+          {/* Monthly Charts */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg">Tendance des Réservations</CardTitle>
+                <CardDescription>Nombre de réservations par semaine ce mois</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={200}>
+                  <BarChart data={bookingTrendsData}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="day" axisLine={false} tickLine={false} />
+                    <YAxis axisLine={false} tickLine={false} />
+                    <Tooltip />
+                    <Bar dataKey="bookings" fill="#8884d8" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg">Revenus Mensuels</CardTitle>
+                <CardDescription>Revenus générés par semaine ce mois (€)</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={200}>
+                  <AreaChart data={earningsTrendData}>
+                    <defs>
+                      <linearGradient id="colorEarningsMonthly" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="#82ca9d" stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="day" axisLine={false} tickLine={false} />
+                    <YAxis axisLine={false} tickLine={false} />
+                    <Tooltip />
+                    <Area type="monotone" dataKey="earnings" stroke="#82ca9d" fillOpacity={1} fill="url(#colorEarningsMonthly)" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
           </div>
         </TabsContent>
       </Tabs>
@@ -214,72 +385,103 @@ const Dashboard = () => {
       {/* Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Upcoming Bookings */}
-        <Card>
-          <CardHeader className="pb-3">
+        <Card className="overflow-hidden border shadow-sm">
+          <CardHeader className="border-b bg-muted/10 pb-3">
             <div className="flex items-center justify-between">
-              <CardTitle>Réservations à Venir</CardTitle>
-              <Button variant="ghost" size="sm" asChild>
-                <Link to="/dashboard/bookings" className="flex items-center text-sm text-muted-foreground hover:text-foreground">
+              <CardTitle className="text-xl">Réservations à Venir</CardTitle>
+              <Button variant="ghost" size="sm" asChild className="text-primary">
+                <Link to="/dashboard/bookings" className="flex items-center text-sm font-medium">
                   Voir Tout <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
               </Button>
             </div>
             <CardDescription>Gérez vos prochaines réservations</CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
+          <CardContent className="p-0">
+            <div className="divide-y">
               {upcomingBookings.map((booking) => (
-                <div key={booking.id} className="flex flex-col p-4 border rounded-lg bg-card">
+                <div key={booking.id} className="p-4 hover:bg-muted/20 transition-colors">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center">
                       <span className="font-medium text-primary">{booking.id}</span>
                       <Badge className={cn(
-                        "ml-2",
-                        booking.status === 'Confirmé' ? "bg-green-500" : "bg-amber-500"
+                        "ml-2 text-xs",
+                        booking.status === 'Confirmé' ? "bg-amber-500" : "bg-blue-500"
                       )}>
-                        {booking.status}
+                        {booking.status === 'Confirmé' ? (
+                          <span className="flex items-center">
+                            <Clock className="mr-1 h-3 w-3" />
+                            {booking.status}
+                          </span>
+                        ) : (
+                          <span className="flex items-center">
+                            <AlertTriangle className="mr-1 h-3 w-3" />
+                            {booking.status}
+                          </span>
+                        )}
                       </Badge>
                     </div>
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                      <Eye className="h-4 w-4" />
+                    <Button variant="outline" size="sm" className="h-8 rounded-full">
+                      <Eye className="h-4 w-4 mr-1" /> Détails
                     </Button>
                   </div>
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-1">
-                    <div className="text-sm text-muted-foreground">Type de véhicule:</div>
-                    <div className="text-sm font-medium">{booking.vehicleType}</div>
-                    <div className="text-sm text-muted-foreground">Départ:</div>
-                    <div className="text-sm font-medium truncate">{booking.pickup}</div>
-                    <div className="text-sm text-muted-foreground">Arrivée:</div>
-                    <div className="text-sm font-medium truncate">{booking.dropoff}</div>
-                    <div className="text-sm text-muted-foreground">Date & Heure:</div>
-                    <div className="text-sm font-medium">{booking.date} à {booking.time}</div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                    <div className="flex items-start">
+                      <div className="w-24 text-muted-foreground">Véhicule:</div>
+                      <div className="font-medium">{booking.vehicleType}</div>
+                    </div>
+                    <div className="flex items-start">
+                      <div className="w-24 text-muted-foreground">Date:</div>
+                      <div className="font-medium">{booking.date} à {booking.time}</div>
+                    </div>
+                    <div className="flex items-start md:col-span-2">
+                      <div className="w-24 text-muted-foreground">Départ:</div>
+                      <div className="font-medium truncate">{booking.pickup}</div>
+                    </div>
+                    <div className="flex items-start md:col-span-2">
+                      <div className="w-24 text-muted-foreground">Arrivée:</div>
+                      <div className="font-medium truncate">{booking.dropoff}</div>
+                    </div>
                   </div>
                 </div>
               ))}
+            </div>
+            
+            <div className="p-4 border-t bg-muted/10">
+              <Button className="w-full" asChild>
+                <Link to="/dashboard/bookings/new">
+                  Créer une Nouvelle Réservation
+                </Link>
+              </Button>
             </div>
           </CardContent>
         </Card>
         
         {/* Vehicle Management */}
-        <Card>
-          <CardHeader className="pb-3">
+        <Card className="overflow-hidden border shadow-sm">
+          <CardHeader className="border-b bg-muted/10 pb-3">
             <div className="flex items-center justify-between">
-              <CardTitle>Gestion des Véhicules</CardTitle>
-              <Button variant="ghost" size="sm" asChild>
-                <Link to="/dashboard/vehicles" className="flex items-center text-sm text-muted-foreground hover:text-foreground">
+              <CardTitle className="text-xl">Gestion des Véhicules</CardTitle>
+              <Button variant="ghost" size="sm" asChild className="text-primary">
+                <Link to="/dashboard/vehicles" className="flex items-center text-sm font-medium">
                   Voir Tout <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
               </Button>
             </div>
             <CardDescription>Gérez votre flotte de véhicules</CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
+          <CardContent className="p-0">
+            <div className="divide-y">
               {vehiclesList.map((vehicle) => (
-                <div key={vehicle.id} className="flex flex-col p-4 border rounded-lg bg-card">
+                <div key={vehicle.id} className="p-4 hover:bg-muted/20 transition-colors">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium text-primary">{vehicle.id}</span>
+                    <div className="flex items-center">
+                      <Truck className="h-4 w-4 mr-2 text-primary" />
+                      <span className="font-medium">{vehicle.id}</span>
+                    </div>
                     <Badge className={cn(
+                      "text-xs font-medium",
                       vehicle.status === 'Disponible' ? "bg-green-500" : 
                       vehicle.status === 'Réservé' ? "bg-blue-500" : 
                       "bg-orange-500"
@@ -287,22 +489,37 @@ const Dashboard = () => {
                       {vehicle.status}
                     </Badge>
                   </div>
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-1">
-                    <div className="text-sm text-muted-foreground">Type:</div>
-                    <div className="text-sm font-medium">{vehicle.type}</div>
-                    <div className="text-sm text-muted-foreground">Capacité:</div>
-                    <div className="text-sm font-medium">{vehicle.capacity}</div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                    <div className="flex items-start">
+                      <div className="w-24 text-muted-foreground">Type:</div>
+                      <div className="font-medium">{vehicle.type}</div>
+                    </div>
+                    <div className="flex items-start">
+                      <div className="w-24 text-muted-foreground">Capacité:</div>
+                      <div className="font-medium">{vehicle.capacity}</div>
+                    </div>
                   </div>
-                  <div className="flex justify-end mt-3 space-x-2">
-                    <Button variant="outline" size="sm">Modifier</Button>
-                    <Button variant="destructive" size="sm">Désactiver</Button>
+                  
+                  <div className="flex justify-end mt-2 space-x-2">
+                    <Button variant="outline" size="sm" className="h-8">
+                      Réserver
+                    </Button>
+                    <Button variant="outline" size="sm" className="h-8">
+                      Gérer
+                    </Button>
                   </div>
                 </div>
               ))}
             </div>
-            <Button className="w-full mt-4">
-              Ajouter un Véhicule
-            </Button>
+            
+            <div className="p-4 border-t bg-muted/10">
+              <Button className="w-full" asChild>
+                <Link to="/dashboard/vehicles/new">
+                  Ajouter un Véhicule
+                </Link>
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -321,7 +538,7 @@ interface MetricCardProps {
 }
 
 const MetricCard = ({ title, value, icon, description, trend, trendNegative = false }: MetricCardProps) => (
-  <Card>
+  <Card className="border shadow-sm overflow-hidden">
     <CardContent className="p-6">
       <div className="flex items-center justify-between">
         <span className="p-2 rounded-md bg-primary/10 text-primary">{icon}</span>
@@ -334,10 +551,10 @@ const MetricCard = ({ title, value, icon, description, trend, trendNegative = fa
         </Badge>
       </div>
       <div className="mt-3">
-        <h3 className="text-xl font-bold">{value}</h3>
-        <p className="text-sm text-muted-foreground">{title}</p>
+        <h3 className="text-2xl font-bold">{value}</h3>
+        <p className="text-sm font-medium text-foreground">{title}</p>
       </div>
-      <p className="text-xs text-muted-foreground mt-3">{description}</p>
+      <p className="text-xs text-muted-foreground mt-1">{description}</p>
     </CardContent>
   </Card>
 );
