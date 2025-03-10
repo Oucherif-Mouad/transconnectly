@@ -35,18 +35,18 @@ const Index = () => {
   return (
     <Layout fullWidth>
       {/* Hero Section with reduced height */}
-      <section className="min-h-[80vh] flex items-center bg-gradient-to-br from-accent to-background overflow-hidden">
+      <section className="min-h-[70vh] flex items-center bg-gradient-to-br from-accent to-background overflow-hidden">
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-pattern opacity-5"></div>
         </div>
         
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 z-10 py-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 z-10 py-8">
           <div className="flex flex-col items-center justify-center">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-              className="text-center max-w-2xl mb-8"
+              className="text-center max-w-2xl mb-6"
             >
               <Badge variant="outline" className="px-4 py-1 text-sm bg-primary/10 text-primary border-primary/20">
                 Solution de Transport Rungis
@@ -72,14 +72,7 @@ const Index = () => {
               </div>
             </motion.div>
             
-            <div className="flex flex-col sm:flex-row gap-4 pt-6 mt-4 justify-center">
-              <Button size="lg" asChild>
-                <Link to="/signup">Commencer <ArrowRight className="ml-2 h-5 w-5" /></Link>
-              </Button>
-              <Button size="lg" variant="outline" asChild>
-                <Link to="/about">En savoir plus</Link>
-              </Button>
-            </div>
+            {/* Buttons removed from here */}
           </div>
         </div>
       </section>
