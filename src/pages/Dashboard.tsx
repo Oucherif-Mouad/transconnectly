@@ -21,6 +21,10 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, AreaChart, Area } from 'recharts';
 
+// Theme colors
+const CHART_BLUE = '#0EA5E9';
+const LIGHT_BLUE = '#D3E4FD';
+
 // Dummy data
 const metricsData = {
   daily: {
@@ -187,11 +191,17 @@ const Dashboard = () => {
               <CardContent>
                 <ResponsiveContainer width="100%" height={200}>
                   <BarChart data={bookingTrendsData}>
+                    <defs>
+                      <linearGradient id="colorBookings" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor={CHART_BLUE} stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor={LIGHT_BLUE} stopOpacity={0.2}/>
+                      </linearGradient>
+                    </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <XAxis dataKey="day" axisLine={false} tickLine={false} />
                     <YAxis axisLine={false} tickLine={false} />
                     <Tooltip />
-                    <Bar dataKey="bookings" fill="#8884d8" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="bookings" fill="url(#colorBookings)" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -266,11 +276,17 @@ const Dashboard = () => {
               <CardContent>
                 <ResponsiveContainer width="100%" height={200}>
                   <BarChart data={bookingTrendsData}>
+                    <defs>
+                      <linearGradient id="colorBookingsWeekly" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor={CHART_BLUE} stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor={LIGHT_BLUE} stopOpacity={0.2}/>
+                      </linearGradient>
+                    </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <XAxis dataKey="day" axisLine={false} tickLine={false} />
                     <YAxis axisLine={false} tickLine={false} />
                     <Tooltip />
-                    <Bar dataKey="bookings" fill="#8884d8" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="bookings" fill="url(#colorBookingsWeekly)" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -345,11 +361,17 @@ const Dashboard = () => {
               <CardContent>
                 <ResponsiveContainer width="100%" height={200}>
                   <BarChart data={bookingTrendsData}>
+                    <defs>
+                      <linearGradient id="colorBookingsMonthly" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor={CHART_BLUE} stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor={LIGHT_BLUE} stopOpacity={0.2}/>
+                      </linearGradient>
+                    </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <XAxis dataKey="day" axisLine={false} tickLine={false} />
                     <YAxis axisLine={false} tickLine={false} />
                     <Tooltip />
-                    <Bar dataKey="bookings" fill="#8884d8" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="bookings" fill="url(#colorBookingsMonthly)" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
