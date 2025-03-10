@@ -28,7 +28,7 @@ const Index = () => {
     {
       icon: <Shield className="h-10 w-10 text-primary" />,
       title: 'Sûr et Fiable',
-      description: 'Partenaires de transport vérifiés et couverture d'assurance pour votre tranquillité d'esprit.'
+      description: "Partenaires de transport vérifiés et couverture d'assurance pour votre tranquillité d'esprit."
     }
   ];
 
