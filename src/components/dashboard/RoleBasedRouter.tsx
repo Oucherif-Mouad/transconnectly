@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import Dashboard from '@/pages/Dashboard';
+import TransportDashboard from '@/pages/dashboard/TransportDashboard';
 import ClientDashboard from '@/pages/dashboard/ClientDashboard';
 
 // This would typically come from an authentication context
@@ -34,7 +34,7 @@ export const RoleBasedRouter: React.FC<RoleBasedRouterProps> = ({
 // Pre-configured components for dashboard routing
 export const DashboardRouter = () => (
   <RoleBasedRouter 
-    transportComponent={Dashboard}
+    transportComponent={TransportDashboard}
     clientComponent={ClientDashboard}
   />
 );

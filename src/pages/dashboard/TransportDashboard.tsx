@@ -10,145 +10,137 @@ import {
   Truck, 
   CalendarCheck, 
   CreditCard, 
+  Eye, 
+  Check, 
   Clock, 
   AlertTriangle, 
-  Check,
-  Search,
-  CheckCircle2,
-  Calendar,
-  Filter,
-  MapPin,
-  Building
+  ChevronRight
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, AreaChart, Area } from 'recharts';
 
 // Theme colors - using the primary color from the theme
 const CHART_BLUE = 'hsl(var(--primary))';
 const LIGHT_BLUE = 'hsl(var(--primary) / 0.2)';
 
-// Dummy data for metrics
+// Dummy data
 const metricsData = {
   daily: {
-    bookings: 3,
-    completed: 2,
-    upcoming: 5,
-    totalSpent: 450,
+    bookings: 12,
+    earnings: 1250,
+    vehicles: 8,
+    completed: 9
   },
   weekly: {
-    bookings: 18,
-    completed: 15,
-    upcoming: 8,
-    totalSpent: 2350,
+    bookings: 78,
+    earnings: 7800,
+    vehicles: 12,
+    completed: 65
   },
   monthly: {
-    bookings: 62,
-    completed: 58,
-    upcoming: 12,
-    totalSpent: 8450,
+    bookings: 342,
+    earnings: 32450,
+    vehicles: 15,
+    completed: 298
   }
 };
 
 // Chart data
-const bookingHistoryData = [
-  { day: 'Lun', bookings: 2 },
-  { day: 'Mar', bookings: 3 },
-  { day: 'Mer', bookings: 1 },
-  { day: 'Jeu', bookings: 2 },
-  { day: 'Ven', bookings: 4 },
-  { day: 'Sam', bookings: 2 },
-  { day: 'Dim', bookings: 0 },
+const bookingTrendsData = [
+  { day: 'Lun', bookings: 4 },
+  { day: 'Mar', bookings: 6 },
+  { day: 'Mer', bookings: 8 },
+  { day: 'Jeu', bookings: 7 },
+  { day: 'Ven', bookings: 12 },
+  { day: 'Sam', bookings: 5 },
+  { day: 'Dim', bookings: 3 },
 ];
 
-const spendingTrendData = [
-  { day: 'Lun', amount: 220 },
-  { day: 'Mar', amount: 330 },
-  { day: 'Mer', amount: 110 },
-  { day: 'Jeu', amount: 220 },
-  { day: 'Ven', amount: 440 },
-  { day: 'Sam', amount: 220 },
-  { day: 'Dim', amount: 0 },
+const earningsTrendData = [
+  { day: 'Lun', earnings: 420 },
+  { day: 'Mar', earnings: 580 },
+  { day: 'Mer', earnings: 750 },
+  { day: 'Jeu', earnings: 620 },
+  { day: 'Ven', earnings: 1100 },
+  { day: 'Sam', earnings: 450 },
+  { day: 'Dim', earnings: 280 },
 ];
 
-// Dummy data for bookings
-const activeBookings = [
+const upcomingBookings = [
   {
-    id: 'BK-12350',
+    id: 'BK-12345',
     vehicleType: 'Camion Frigorifique',
     pickup: 'Marché de Rungis, Hall A',
-    dropoff: 'Restaurant Le Gourmet, Paris',
-    date: '16 Mai 2024',
-    time: '07:30',
-    status: 'Confirmé',
-    transportCompany: 'Trans Express'
+    dropoff: 'Restaurant La Belle Vue, Paris',
+    date: '15 Mai 2023',
+    time: '08:00',
+    status: 'Confirmé'
   },
   {
-    id: 'BK-12351',
+    id: 'BK-12346',
     vehicleType: 'Fourgon',
     pickup: 'Marché de Rungis, Hall C',
-    dropoff: 'Épicerie Fine Delices, Montmartre',
-    date: '16 Mai 2024',
-    time: '09:00',
-    status: 'En Route',
-    transportCompany: 'Rungis Logistics'
+    dropoff: 'Supermarché Carrefour, Orly',
+    date: '15 Mai 2023',
+    time: '10:30',
+    status: 'En Attente'
   },
   {
-    id: 'BK-12352',
+    id: 'BK-12347',
     vehicleType: 'Camionnette',
-    pickup: 'Marché de Rungis, Pavillon Poissons',
-    dropoff: 'Bistro Maritime, Seine',
-    date: '17 Mai 2024',
-    time: '06:45',
-    status: 'Confirmé',
-    transportCompany: 'Trans Express'
+    pickup: 'Marché de Rungis, Pavillon Fruits',
+    dropoff: 'Hôtel Mercure, Versailles',
+    date: '16 Mai 2023',
+    time: '07:15',
+    status: 'Confirmé'
+  },
+  {
+    id: 'BK-12348',
+    vehicleType: 'Camion Plateau',
+    pickup: 'Marché de Rungis, Entrée D6',
+    dropoff: 'Marché Saint-Germain, Paris',
+    date: '16 Mai 2023',
+    time: '09:00',
+    status: 'Confirmé'
   }
 ];
 
-// Available vehicles for booking
-const availableVehicles = [
+const vehiclesList = [
   {
-    id: 'VH-101',
+    id: 'VH-001',
     type: 'Camion Frigorifique',
     capacity: '2.5 tonnes',
-    price: '250 €/jour',
-    company: 'Trans Express',
-    rating: 4.8
+    status: 'Disponible'
   },
   {
-    id: 'VH-102',
+    id: 'VH-002',
     type: 'Fourgon',
     capacity: '1.2 tonnes',
-    price: '180 €/jour',
-    company: 'Rungis Logistics',
-    rating: 4.6
+    status: 'Réservé'
   },
   {
-    id: 'VH-103',
+    id: 'VH-003',
     type: 'Camionnette',
     capacity: '800 kg',
-    price: '120 €/jour',
-    company: 'Trans Express',
-    rating: 4.7
+    status: 'Disponible'
   },
   {
-    id: 'VH-104',
+    id: 'VH-004',
     type: 'Camion Plateau',
     capacity: '3 tonnes',
-    price: '220 €/jour',
-    company: 'Rungis Transport',
-    rating: 4.9
+    status: 'En Maintenance'
   }
 ];
 
-const ClientDashboard = () => {
+const TransportDashboard = () => {
   return (
     <DashboardLayout>
       {/* Metrics Section */}
       <Tabs defaultValue="daily" className="mb-8">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-3xl font-bold">Tableau de Bord Client</h2>
+          <h2 className="text-3xl font-bold">Tableau de Bord Transporteur</h2>
           <TabsList className="bg-background border">
             <TabsTrigger value="daily" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Aujourd'hui</TabsTrigger>
             <TabsTrigger value="weekly" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Cette Semaine</TabsTrigger>
@@ -162,28 +154,29 @@ const ClientDashboard = () => {
               title="Réservations" 
               value={metricsData.daily.bookings} 
               icon={<CalendarCheck className="h-5 w-5" />} 
-              description="Réservations effectuées aujourd'hui"
-              trend="+33%"
+              description="Total des réservations aujourd'hui"
+              trend="+8%"
+            />
+            <MetricCard 
+              title="Revenus" 
+              value={`${metricsData.daily.earnings} €`} 
+              icon={<CreditCard className="h-5 w-5" />} 
+              description="Revenus générés aujourd'hui"
+              trend="+12%"
+            />
+            <MetricCard 
+              title="Véhicules" 
+              value={metricsData.daily.vehicles} 
+              icon={<Truck className="h-5 w-5" />} 
+              description="Véhicules disponibles"
+              trend="-2%"
+              trendNegative
             />
             <MetricCard 
               title="Terminées" 
               value={metricsData.daily.completed} 
-              icon={<CheckCircle2 className="h-5 w-5" />} 
-              description="Livraisons terminées aujourd'hui"
-              trend="+50%"
-            />
-            <MetricCard 
-              title="À venir" 
-              value={metricsData.daily.upcoming} 
-              icon={<Calendar className="h-5 w-5" />} 
-              description="Réservations à venir"
-              trend="+20%"
-            />
-            <MetricCard 
-              title="Dépenses" 
-              value={`${metricsData.daily.totalSpent} €`} 
-              icon={<CreditCard className="h-5 w-5" />} 
-              description="Total dépensé aujourd'hui"
+              icon={<Check className="h-5 w-5" />} 
+              description="Réservations terminées"
               trend="+15%"
             />
           </div>
@@ -197,9 +190,9 @@ const ClientDashboard = () => {
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={200}>
-                  <BarChart data={bookingHistoryData}>
+                  <BarChart data={bookingTrendsData}>
                     <defs>
-                      <linearGradient id="colorBookingsClient" x1="0" y1="0" x2="0" y2="1">
+                      <linearGradient id="colorBookings" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor={CHART_BLUE} stopOpacity={0.8}/>
                         <stop offset="95%" stopColor={LIGHT_BLUE} stopOpacity={0.8}/>
                       </linearGradient>
@@ -208,7 +201,7 @@ const ClientDashboard = () => {
                     <XAxis dataKey="day" axisLine={false} tickLine={false} />
                     <YAxis axisLine={false} tickLine={false} />
                     <Tooltip />
-                    <Bar dataKey="bookings" fill="url(#colorBookingsClient)" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="bookings" fill="url(#colorBookings)" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -216,23 +209,23 @@ const ClientDashboard = () => {
             
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg">Dépenses Transport</CardTitle>
-                <CardDescription>Montant dépensé par jour (€)</CardDescription>
+                <CardTitle className="text-lg">Revenus Journaliers</CardTitle>
+                <CardDescription>Revenus générés par jour (€)</CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={200}>
-                  <AreaChart data={spendingTrendData}>
+                  <AreaChart data={earningsTrendData}>
                     <defs>
-                      <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={CHART_BLUE} stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor={LIGHT_BLUE} stopOpacity={0.8}/>
+                      <linearGradient id="colorEarnings" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="#82ca9d" stopOpacity={0}/>
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <XAxis dataKey="day" axisLine={false} tickLine={false} />
                     <YAxis axisLine={false} tickLine={false} />
                     <Tooltip />
-                    <Area type="monotone" dataKey="amount" stroke={CHART_BLUE} fillOpacity={1} fill="url(#colorAmount)" />
+                    <Area type="monotone" dataKey="earnings" stroke="#82ca9d" fillOpacity={1} fill="url(#colorEarnings)" />
                   </AreaChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -241,39 +234,39 @@ const ClientDashboard = () => {
         </TabsContent>
         
         <TabsContent value="weekly" className="space-y-4">
-          {/* Weekly metrics */}
+          {/* Weekly metrics - same structure as daily but with weekly data */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <MetricCard 
               title="Réservations" 
               value={metricsData.weekly.bookings} 
               icon={<CalendarCheck className="h-5 w-5" />} 
-              description="Réservations cette semaine"
-              trend="+22%"
+              description="Total des réservations cette semaine"
+              trend="+12%"
+            />
+            <MetricCard 
+              title="Revenus" 
+              value={`${metricsData.weekly.earnings} €`} 
+              icon={<CreditCard className="h-5 w-5" />} 
+              description="Revenus générés cette semaine"
+              trend="+18%"
+            />
+            <MetricCard 
+              title="Véhicules" 
+              value={metricsData.weekly.vehicles} 
+              icon={<Truck className="h-5 w-5" />} 
+              description="Véhicules disponibles"
+              trend="+5%"
             />
             <MetricCard 
               title="Terminées" 
               value={metricsData.weekly.completed} 
-              icon={<CheckCircle2 className="h-5 w-5" />} 
-              description="Livraisons terminées cette semaine"
-              trend="+25%"
-            />
-            <MetricCard 
-              title="À venir" 
-              value={metricsData.weekly.upcoming} 
-              icon={<Calendar className="h-5 w-5" />} 
-              description="Réservations à venir"
-              trend="+8%"
-            />
-            <MetricCard 
-              title="Dépenses" 
-              value={`${metricsData.weekly.totalSpent} €`} 
-              icon={<CreditCard className="h-5 w-5" />} 
-              description="Total dépensé cette semaine"
-              trend="+18%"
+              icon={<Check className="h-5 w-5" />} 
+              description="Réservations terminées"
+              trend="+10%"
             />
           </div>
           
-          {/* Weekly Charts - using same components but would have different data in real app */}
+          {/* Weekly Charts - can be the same as daily for this example */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <Card>
               <CardHeader className="pb-2">
@@ -282,9 +275,9 @@ const ClientDashboard = () => {
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={200}>
-                  <BarChart data={bookingHistoryData}>
+                  <BarChart data={bookingTrendsData}>
                     <defs>
-                      <linearGradient id="colorBookingsClientWeekly" x1="0" y1="0" x2="0" y2="1">
+                      <linearGradient id="colorBookingsWeekly" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor={CHART_BLUE} stopOpacity={0.8}/>
                         <stop offset="95%" stopColor={LIGHT_BLUE} stopOpacity={0.8}/>
                       </linearGradient>
@@ -293,7 +286,7 @@ const ClientDashboard = () => {
                     <XAxis dataKey="day" axisLine={false} tickLine={false} />
                     <YAxis axisLine={false} tickLine={false} />
                     <Tooltip />
-                    <Bar dataKey="bookings" fill="url(#colorBookingsClientWeekly)" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="bookings" fill="url(#colorBookingsWeekly)" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -301,23 +294,23 @@ const ClientDashboard = () => {
             
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg">Dépenses Transport</CardTitle>
-                <CardDescription>Montant dépensé par jour cette semaine (€)</CardDescription>
+                <CardTitle className="text-lg">Revenus Hebdomadaires</CardTitle>
+                <CardDescription>Revenus générés par jour cette semaine (€)</CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={200}>
-                  <AreaChart data={spendingTrendData}>
+                  <AreaChart data={earningsTrendData}>
                     <defs>
-                      <linearGradient id="colorAmountWeekly" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={CHART_BLUE} stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor={LIGHT_BLUE} stopOpacity={0.8}/>
+                      <linearGradient id="colorEarningsWeekly" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="#82ca9d" stopOpacity={0}/>
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <XAxis dataKey="day" axisLine={false} tickLine={false} />
                     <YAxis axisLine={false} tickLine={false} />
                     <Tooltip />
-                    <Area type="monotone" dataKey="amount" stroke={CHART_BLUE} fillOpacity={1} fill="url(#colorAmountWeekly)" />
+                    <Area type="monotone" dataKey="earnings" stroke="#82ca9d" fillOpacity={1} fill="url(#colorEarningsWeekly)" />
                   </AreaChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -332,29 +325,29 @@ const ClientDashboard = () => {
               title="Réservations" 
               value={metricsData.monthly.bookings} 
               icon={<CalendarCheck className="h-5 w-5" />} 
-              description="Réservations ce mois"
-              trend="+15%"
+              description="Total des réservations ce mois"
+              trend="+24%"
+            />
+            <MetricCard 
+              title="Revenus" 
+              value={`${metricsData.monthly.earnings} €`} 
+              icon={<CreditCard className="h-5 w-5" />} 
+              description="Revenus générés ce mois"
+              trend="+20%"
+            />
+            <MetricCard 
+              title="Véhicules" 
+              value={metricsData.monthly.vehicles} 
+              icon={<Truck className="h-5 w-5" />} 
+              description="Véhicules disponibles"
+              trend="+8%"
             />
             <MetricCard 
               title="Terminées" 
               value={metricsData.monthly.completed} 
-              icon={<CheckCircle2 className="h-5 w-5" />} 
-              description="Livraisons terminées ce mois"
-              trend="+18%"
-            />
-            <MetricCard 
-              title="À venir" 
-              value={metricsData.monthly.upcoming} 
-              icon={<Calendar className="h-5 w-5" />} 
-              description="Réservations à venir"
-              trend="+5%"
-            />
-            <MetricCard 
-              title="Dépenses" 
-              value={`${metricsData.monthly.totalSpent} €`} 
-              icon={<CreditCard className="h-5 w-5" />} 
-              description="Total dépensé ce mois"
-              trend="+12%"
+              icon={<Check className="h-5 w-5" />} 
+              description="Réservations terminées"
+              trend="+28%"
             />
           </div>
           
@@ -367,9 +360,9 @@ const ClientDashboard = () => {
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={200}>
-                  <BarChart data={bookingHistoryData}>
+                  <BarChart data={bookingTrendsData}>
                     <defs>
-                      <linearGradient id="colorBookingsClientMonthly" x1="0" y1="0" x2="0" y2="1">
+                      <linearGradient id="colorBookingsMonthly" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor={CHART_BLUE} stopOpacity={0.8}/>
                         <stop offset="95%" stopColor={LIGHT_BLUE} stopOpacity={0.8}/>
                       </linearGradient>
@@ -378,7 +371,7 @@ const ClientDashboard = () => {
                     <XAxis dataKey="day" axisLine={false} tickLine={false} />
                     <YAxis axisLine={false} tickLine={false} />
                     <Tooltip />
-                    <Bar dataKey="bookings" fill="url(#colorBookingsClientMonthly)" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="bookings" fill="url(#colorBookingsMonthly)" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -386,23 +379,23 @@ const ClientDashboard = () => {
             
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg">Dépenses Transport</CardTitle>
-                <CardDescription>Montant dépensé par semaine ce mois (€)</CardDescription>
+                <CardTitle className="text-lg">Revenus Mensuels</CardTitle>
+                <CardDescription>Revenus générés par semaine ce mois (€)</CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={200}>
-                  <AreaChart data={spendingTrendData}>
+                  <AreaChart data={earningsTrendData}>
                     <defs>
-                      <linearGradient id="colorAmountMonthly" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={CHART_BLUE} stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor={LIGHT_BLUE} stopOpacity={0.8}/>
+                      <linearGradient id="colorEarningsMonthly" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="#82ca9d" stopOpacity={0}/>
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <XAxis dataKey="day" axisLine={false} tickLine={false} />
                     <YAxis axisLine={false} tickLine={false} />
                     <Tooltip />
-                    <Area type="monotone" dataKey="amount" stroke={CHART_BLUE} fillOpacity={1} fill="url(#colorAmountMonthly)" />
+                    <Area type="monotone" dataKey="earnings" stroke="#82ca9d" fillOpacity={1} fill="url(#colorEarningsMonthly)" />
                   </AreaChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -413,13 +406,13 @@ const ClientDashboard = () => {
       
       {/* Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Active Bookings - Redesigned */}
+        {/* Upcoming Bookings - Redesigned */}
         <Card className="shadow-md overflow-hidden">
           <CardHeader className="bg-primary/5 pb-2">
             <div className="flex justify-between items-center">
               <div>
-                <CardTitle className="text-xl">Vos Transports</CardTitle>
-                <CardDescription>Suivez vos réservations en cours</CardDescription>
+                <CardTitle className="text-xl">Réservations à Venir</CardTitle>
+                <CardDescription>Gérez vos prochaines réservations</CardDescription>
               </div>
               <Button variant="outline" size="sm" asChild>
                 <Link to="/dashboard/bookings" className="flex items-center">
@@ -430,38 +423,29 @@ const ClientDashboard = () => {
           </CardHeader>
           <CardContent className="p-0">
             <div className="divide-y">
-              {activeBookings.map((booking) => (
+              {upcomingBookings.map((booking) => (
                 <div key={booking.id} className="hover:bg-muted/10 transition-colors">
                   <div className="p-4">
                     <div className="flex justify-between items-center mb-2">
                       <div className="flex items-center gap-2">
-                        <div className={cn(
-                          "p-2 rounded-full",
-                          booking.status === 'Confirmé' ? "bg-amber-500/10" : 
-                          booking.status === 'En Route' ? "bg-primary/10" : 
-                          "bg-green-500/10"
-                        )}>
+                        <div className="p-2 rounded-full bg-primary/10">
                           {booking.status === 'Confirmé' ? 
-                            <Clock className={cn("h-4 w-4", "text-amber-500")} /> : 
-                            booking.status === 'En Route' ?
-                            <Truck className="h-4 w-4 text-primary" /> :
-                            <Check className="h-4 w-4 text-green-500" />
+                            <Clock className="h-4 w-4 text-primary" /> : 
+                            <AlertTriangle className="h-4 w-4 text-amber-500" />
                           }
                         </div>
                         <div>
                           <span className="font-medium">{booking.id}</span>
                           <Badge className={cn(
                             "ml-2",
-                            booking.status === 'Confirmé' ? "bg-amber-500" : 
-                            booking.status === 'En Route' ? "bg-primary" : 
-                            "bg-green-500"
+                            booking.status === 'Confirmé' ? "bg-primary" : "bg-amber-500"
                           )}>
                             {booking.status}
                           </Badge>
                         </div>
                       </div>
                       <Button variant="ghost" size="sm" className="text-primary">
-                        Suivre
+                        <Eye className="h-4 w-4 mr-1" /> Détails
                       </Button>
                     </div>
                     <div className="grid grid-cols-2 gap-2 text-sm mt-2">
@@ -473,19 +457,13 @@ const ClientDashboard = () => {
                         <span className="text-muted-foreground">Date & Heure</span>
                         <span className="font-medium">{booking.date} · {booking.time}</span>
                       </div>
-                      <div className="flex flex-col">
-                        <span className="text-muted-foreground">Transporteur</span>
-                        <span className="font-medium flex items-center">
-                          <Building className="h-3.5 w-3.5 mr-1" />
-                          {booking.transportCompany}
-                        </span>
+                      <div className="flex flex-col col-span-2">
+                        <span className="text-muted-foreground">De</span>
+                        <span className="font-medium">{booking.pickup}</span>
                       </div>
                       <div className="flex flex-col col-span-2">
-                        <span className="text-muted-foreground">Trajet</span>
-                        <span className="font-medium flex items-center">
-                          <MapPin className="h-3.5 w-3.5 mr-1 text-primary" />
-                          {booking.pickup} → {booking.dropoff}
-                        </span>
+                        <span className="text-muted-foreground">À</span>
+                        <span className="font-medium">{booking.dropoff}</span>
                       </div>
                     </div>
                   </div>
@@ -496,71 +474,70 @@ const ClientDashboard = () => {
             <div className="p-4 bg-muted/5 border-t">
               <Button className="w-full" asChild>
                 <Link to="/dashboard/bookings/new">
-                  Nouvelle Réservation de Transport
+                  Créer une Nouvelle Réservation
                 </Link>
               </Button>
             </div>
           </CardContent>
         </Card>
         
-        {/* Available Vehicles - Redesigned */}
+        {/* Vehicle Management - Redesigned */}
         <Card className="shadow-md overflow-hidden">
           <CardHeader className="bg-primary/5 pb-2">
             <div className="flex justify-between items-center">
               <div>
-                <CardTitle className="text-xl">Véhicules Disponibles</CardTitle>
-                <CardDescription>Trouvez un transporteur adapté à vos besoins</CardDescription>
+                <CardTitle className="text-xl">Votre Flotte</CardTitle>
+                <CardDescription>Gérez vos véhicules de transport</CardDescription>
               </div>
               <Button variant="outline" size="sm" asChild>
-                <Link to="/vehicles" className="flex items-center">
+                <Link to="/dashboard/vehicles" className="flex items-center">
                   Voir Tout <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
-              </Button>
-            </div>
-            <div className="flex items-center space-x-2 mt-2">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <input
-                  type="text"
-                  placeholder="Rechercher par type, capacité..."
-                  className="w-full rounded-full h-9 pl-9 pr-4 border border-input"
-                />
-              </div>
-              <Button variant="outline" size="sm" className="h-9 rounded-full">
-                <Filter className="h-4 w-4 mr-1" />
-                Filtrer
               </Button>
             </div>
           </CardHeader>
           <CardContent className="p-0">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-0">
-              {availableVehicles.map((vehicle) => (
+              {vehiclesList.map((vehicle) => (
                 <div key={vehicle.id} className="p-4 border-b sm:border-r hover:bg-muted/10 transition-colors">
-                  <div className="flex items-start mb-2">
-                    <div className="p-2 rounded-full bg-primary/10 mt-0.5 mr-3">
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 rounded-full bg-primary/10 mt-0.5">
                       <Truck className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <h4 className="font-medium">{vehicle.type}</h4>
-                      <p className="text-sm text-muted-foreground">{vehicle.company}</p>
-                      <div className="flex items-center mt-1 text-sm">
-                        <span className="mr-2 text-muted-foreground">{vehicle.capacity}</span>
-                        <Badge variant="outline" className="bg-green-50 text-green-600 border-green-200">
-                          Disponible
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-medium">{vehicle.id}</span>
+                        <Badge className={cn(
+                          "text-xs",
+                          vehicle.status === 'Disponible' ? "bg-green-500" : 
+                          vehicle.status === 'Réservé' ? "bg-primary" : 
+                          "bg-orange-500"
+                        )}>
+                          {vehicle.status}
                         </Badge>
                       </div>
+                      <p className="text-sm">{vehicle.type} • {vehicle.capacity}</p>
+                      <div className="flex gap-2 mt-2">
+                        <Button variant="outline" size="sm" className="h-8 px-2">
+                          Détails
+                        </Button>
+                        {vehicle.status === 'Disponible' && (
+                          <Button size="sm" variant="default" className="h-8 px-2">
+                            Assigner
+                          </Button>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex justify-between items-center mt-2">
-                    <div className="font-medium text-primary">{vehicle.price}</div>
-                    <Button size="sm">Réserver</Button>
                   </div>
                 </div>
               ))}
             </div>
+            
             <div className="p-4 bg-muted/5 border-t">
-              <Button variant="outline" className="w-full">
-                Afficher plus de véhicules
+              <Button className="w-full" asChild>
+                <Link to="/dashboard/vehicles/new">
+                  Ajouter un Véhicule
+                </Link>
               </Button>
             </div>
           </CardContent>
@@ -602,4 +579,4 @@ const MetricCard = ({ title, value, icon, description, trend, trendNegative = fa
   </Card>
 );
 
-export default ClientDashboard;
+export default TransportDashboard;

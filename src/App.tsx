@@ -11,7 +11,7 @@ import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
-import Dashboard from "./pages/Dashboard";
+import TransportDashboard from "./pages/dashboard/TransportDashboard";
 import ClientDashboard from "./pages/dashboard/ClientDashboard";
 import Bookings from "./pages/dashboard/Bookings";
 import Vehicles from "./pages/dashboard/Vehicles";
