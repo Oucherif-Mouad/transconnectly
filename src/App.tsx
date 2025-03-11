@@ -16,7 +16,7 @@ import Bookings from "./pages/dashboard/Bookings";
 import Vehicles from "./pages/dashboard/Vehicles";
 import Earnings from "./pages/dashboard/Earnings";
 import Settings from "./pages/dashboard/Settings";
-import { DashboardRouter } from "./components/dashboard/RoleBasedRouter";
+import { RoleBasedRouter } from "./components/dashboard/RoleBasedRouter";
 
 const queryClient = new QueryClient();
 
@@ -33,12 +33,19 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          
+          {/* Transport Routes */}
           <Route path="/transporteur" element={<TransportDashboard />} />
-          <Route path="/client" element={<ClientDashboard />} />
-          <Route path="/dashboard" element={<Navigate to="/transporteur" replace />} />
-          <Route path="/dashboard/bookings" element={<Bookings />} />
           <Route path="/dashboard/vehicles" element={<Vehicles />} />
+          <Route path="/dashboard/bookings" element={<Bookings />} />
           <Route path="/dashboard/earnings" element={<Earnings />} />
+          
+          {/* Client Routes */}
+          <Route path="/client" element={<ClientDashboard />} />
+          <Route path="/dashboard/invoices" element={<Navigate to="/client" replace />} />
+          
+          {/* Shared Routes */}
+          <Route path="/dashboard" element={<RoleBasedRouter />} />
           <Route path="/dashboard/settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
