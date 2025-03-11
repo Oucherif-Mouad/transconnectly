@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { motion } from 'framer-motion';
+import { toast } from '@/components/ui/use-toast';
 
 export type AuthFormProps = {
   type?: 'login' | 'signup';
@@ -26,7 +27,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ type = 'login' }) => {
     email: '',
     password: '',
     confirmPassword: '',
-    accountType: 'rungis' // 'rungis' or 'transport'
+    accountType: 'client' // Changed default to 'client' instead of 'rungis'
   });
   
   const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,18 +47,42 @@ export const AuthForm: React.FC<AuthFormProps> = ({ type = 'login' }) => {
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
+      // In a real app, you would check the user's role from the login response
+      // For now, navigate to the role-based router which will handle the redirection
       navigate('/dashboard');
+      toast({
+        title: "Connexion réussie",
+        description: "Vous êtes maintenant connecté"
+      });
     }, 1500);
   };
   
   const handleSignupSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (signupData.password !== signupData.confirmPassword) {
+      toast({
+        title: "Erreur",
+        description: "Les mots de passe ne correspondent pas",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setIsLoading(true);
     
-    // Simulate API call
+    // Simulate API call - in a real app you would store the user's role in your authentication system
     setTimeout(() => {
       setIsLoading(false);
-      navigate('/dashboard');
+      
+      // Redirect based on account type
+      const dashboardRoute = signupData.accountType === 'transport' ? '/transporteur' : '/client';
+      navigate(dashboardRoute);
+      
+      toast({
+        title: "Compte créé avec succès",
+        description: `Bienvenue sur votre tableau de bord ${signupData.accountType === 'transport' ? 'transporteur' : 'client'}`
+      });
     }, 1500);
   };
   
@@ -220,11 +245,11 @@ export const AuthForm: React.FC<AuthFormProps> = ({ type = 'login' }) => {
                 <div className="grid grid-cols-2 gap-2">
                   <Button
                     type="button"
-                    variant={signupData.accountType === 'rungis' ? 'default' : 'outline'}
+                    variant={signupData.accountType === 'client' ? 'default' : 'outline'}
                     className="w-full"
-                    onClick={() => handleAccountTypeChange('rungis')}
+                    onClick={() => handleAccountTypeChange('client')}
                   >
-                    Entreprise Rungis
+                    Client
                   </Button>
                   <Button
                     type="button"
