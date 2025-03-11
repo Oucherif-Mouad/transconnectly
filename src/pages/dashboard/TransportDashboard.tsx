@@ -14,7 +14,9 @@ import {
   Check, 
   Clock, 
   AlertTriangle, 
-  ChevronRight
+  ChevronRight,
+  Users,
+  MapPin
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
@@ -22,8 +24,8 @@ import { cn } from '@/lib/utils';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, AreaChart, Area } from 'recharts';
 
 // Theme colors - using the primary color from the theme
-const CHART_BLUE = 'hsl(var(--primary))';
-const LIGHT_BLUE = 'hsl(var(--primary) / 0.2)';
+const CHART_COLOR = 'hsl(var(--primary))';
+const CHART_COLOR_LIGHT = 'hsl(var(--primary) / 0.2)';
 
 // Dummy data
 const metricsData = {
@@ -76,7 +78,8 @@ const upcomingBookings = [
     dropoff: 'Restaurant La Belle Vue, Paris',
     date: '15 Mai 2023',
     time: '08:00',
-    status: 'Confirmé'
+    status: 'Confirmé',
+    client: 'Restaurant La Belle Vue'
   },
   {
     id: 'BK-12346',
@@ -85,7 +88,8 @@ const upcomingBookings = [
     dropoff: 'Supermarché Carrefour, Orly',
     date: '15 Mai 2023',
     time: '10:30',
-    status: 'En Attente'
+    status: 'En Attente',
+    client: 'Supermarché Carrefour'
   },
   {
     id: 'BK-12347',
@@ -94,7 +98,8 @@ const upcomingBookings = [
     dropoff: 'Hôtel Mercure, Versailles',
     date: '16 Mai 2023',
     time: '07:15',
-    status: 'Confirmé'
+    status: 'Confirmé',
+    client: 'Hôtel Mercure'
   },
   {
     id: 'BK-12348',
@@ -103,7 +108,8 @@ const upcomingBookings = [
     dropoff: 'Marché Saint-Germain, Paris',
     date: '16 Mai 2023',
     time: '09:00',
-    status: 'Confirmé'
+    status: 'Confirmé',
+    client: 'Marché Saint-Germain'
   }
 ];
 
@@ -112,25 +118,33 @@ const vehiclesList = [
     id: 'VH-001',
     type: 'Camion Frigorifique',
     capacity: '2.5 tonnes',
-    status: 'Disponible'
+    status: 'Disponible',
+    lastLocation: 'Rungis, Secteur A',
+    driver: 'Michel Dupont'
   },
   {
     id: 'VH-002',
     type: 'Fourgon',
     capacity: '1.2 tonnes',
-    status: 'Réservé'
+    status: 'Réservé',
+    lastLocation: 'Paris, 11ème',
+    driver: 'Sophie Martin'
   },
   {
     id: 'VH-003',
     type: 'Camionnette',
     capacity: '800 kg',
-    status: 'Disponible'
+    status: 'Disponible',
+    lastLocation: 'Rungis, Parking C',
+    driver: 'Jean Lefevre'
   },
   {
     id: 'VH-004',
     type: 'Camion Plateau',
     capacity: '3 tonnes',
-    status: 'En Maintenance'
+    status: 'En Maintenance',
+    lastLocation: 'Garage Central, Orly',
+    driver: 'Non assigné'
   }
 ];
 
@@ -193,8 +207,8 @@ const TransportDashboard = () => {
                   <BarChart data={bookingTrendsData}>
                     <defs>
                       <linearGradient id="colorBookings" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={CHART_BLUE} stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor={LIGHT_BLUE} stopOpacity={0.8}/>
+                        <stop offset="5%" stopColor={CHART_COLOR} stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor={CHART_COLOR_LIGHT} stopOpacity={0.8}/>
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -278,8 +292,8 @@ const TransportDashboard = () => {
                   <BarChart data={bookingTrendsData}>
                     <defs>
                       <linearGradient id="colorBookingsWeekly" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={CHART_BLUE} stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor={LIGHT_BLUE} stopOpacity={0.8}/>
+                        <stop offset="5%" stopColor={CHART_COLOR} stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor={CHART_COLOR_LIGHT} stopOpacity={0.8}/>
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -363,8 +377,8 @@ const TransportDashboard = () => {
                   <BarChart data={bookingTrendsData}>
                     <defs>
                       <linearGradient id="colorBookingsMonthly" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={CHART_BLUE} stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor={LIGHT_BLUE} stopOpacity={0.8}/>
+                        <stop offset="5%" stopColor={CHART_COLOR} stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor={CHART_COLOR_LIGHT} stopOpacity={0.8}/>
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -406,9 +420,9 @@ const TransportDashboard = () => {
       
       {/* Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Upcoming Bookings - Redesigned */}
-        <Card className="shadow-md overflow-hidden">
-          <CardHeader className="bg-primary/5 pb-2">
+        {/* Upcoming Bookings - New Design */}
+        <Card className="overflow-hidden">
+          <CardHeader className="bg-primary/5">
             <div className="flex justify-between items-center">
               <div>
                 <CardTitle className="text-xl">Réservations à Venir</CardTitle>
@@ -424,47 +438,41 @@ const TransportDashboard = () => {
           <CardContent className="p-0">
             <div className="divide-y">
               {upcomingBookings.map((booking) => (
-                <div key={booking.id} className="hover:bg-muted/10 transition-colors">
-                  <div className="p-4">
-                    <div className="flex justify-between items-center mb-2">
+                <div key={booking.id} className="p-4 hover:bg-muted/10 transition-colors">
+                  <div className="flex flex-col gap-3">
+                    <div className="flex justify-between">
                       <div className="flex items-center gap-2">
-                        <div className="p-2 rounded-full bg-primary/10">
-                          {booking.status === 'Confirmé' ? 
-                            <Clock className="h-4 w-4 text-primary" /> : 
-                            <AlertTriangle className="h-4 w-4 text-amber-500" />
-                          }
-                        </div>
-                        <div>
-                          <span className="font-medium">{booking.id}</span>
-                          <Badge className={cn(
-                            "ml-2",
-                            booking.status === 'Confirmé' ? "bg-primary" : "bg-amber-500"
-                          )}>
-                            {booking.status}
-                          </Badge>
-                        </div>
+                        <Badge className={cn(
+                          booking.status === 'Confirmé' ? "bg-primary" : "bg-amber-500"
+                        )}>
+                          {booking.status}
+                        </Badge>
+                        <span className="font-medium">{booking.id}</span>
                       </div>
+                      <div className="text-sm text-muted-foreground">
+                        {booking.date} • {booking.time}
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      <div className="flex items-center gap-2">
+                        <Truck className="h-4 w-4 text-primary" />
+                        <span>{booking.vehicleType}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Users className="h-4 w-4 text-primary" />
+                        <span>{booking.client}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <MapPin className="h-4 w-4 text-primary" />
+                        <span className="truncate">{booking.dropoff}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-end mt-1">
                       <Button variant="ghost" size="sm" className="text-primary">
                         <Eye className="h-4 w-4 mr-1" /> Détails
                       </Button>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2 text-sm mt-2">
-                      <div className="flex flex-col">
-                        <span className="text-muted-foreground">Véhicule</span>
-                        <span className="font-medium">{booking.vehicleType}</span>
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-muted-foreground">Date & Heure</span>
-                        <span className="font-medium">{booking.date} · {booking.time}</span>
-                      </div>
-                      <div className="flex flex-col col-span-2">
-                        <span className="text-muted-foreground">De</span>
-                        <span className="font-medium">{booking.pickup}</span>
-                      </div>
-                      <div className="flex flex-col col-span-2">
-                        <span className="text-muted-foreground">À</span>
-                        <span className="font-medium">{booking.dropoff}</span>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -481,9 +489,9 @@ const TransportDashboard = () => {
           </CardContent>
         </Card>
         
-        {/* Vehicle Management - Redesigned */}
-        <Card className="shadow-md overflow-hidden">
-          <CardHeader className="bg-primary/5 pb-2">
+        {/* Vehicle Management - New Design */}
+        <Card className="overflow-hidden">
+          <CardHeader className="bg-primary/5">
             <div className="flex justify-between items-center">
               <div>
                 <CardTitle className="text-xl">Votre Flotte</CardTitle>
@@ -497,18 +505,14 @@ const TransportDashboard = () => {
             </div>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-0">
+            <div className="divide-y">
               {vehiclesList.map((vehicle) => (
-                <div key={vehicle.id} className="p-4 border-b sm:border-r hover:bg-muted/10 transition-colors">
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 rounded-full bg-primary/10 mt-0.5">
-                      <Truck className="h-5 w-5 text-primary" />
-                    </div>
+                <div key={vehicle.id} className="p-4 hover:bg-muted/10 transition-colors">
+                  <div className="flex justify-between">
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="font-medium">{vehicle.id}</span>
+                        <span className="font-medium">{vehicle.id} • {vehicle.type}</span>
                         <Badge className={cn(
-                          "text-xs",
                           vehicle.status === 'Disponible' ? "bg-green-500" : 
                           vehicle.status === 'Réservé' ? "bg-primary" : 
                           "bg-orange-500"
@@ -516,17 +520,28 @@ const TransportDashboard = () => {
                           {vehicle.status}
                         </Badge>
                       </div>
-                      <p className="text-sm">{vehicle.type} • {vehicle.capacity}</p>
-                      <div className="flex gap-2 mt-2">
-                        <Button variant="outline" size="sm" className="h-8 px-2">
-                          Détails
-                        </Button>
-                        {vehicle.status === 'Disponible' && (
-                          <Button size="sm" variant="default" className="h-8 px-2">
-                            Assigner
-                          </Button>
-                        )}
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm mt-3">
+                        <div className="flex items-center gap-2">
+                          <Users className="h-4 w-4 text-primary" />
+                          <span>{vehicle.driver}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <MapPin className="h-4 w-4 text-primary" />
+                          <span>{vehicle.lastLocation}</span>
+                        </div>
                       </div>
+                    </div>
+                    
+                    <div className="flex flex-col gap-2 items-end justify-between">
+                      <div className="text-sm text-muted-foreground">
+                        Capacité: {vehicle.capacity}
+                      </div>
+                      
+                      <Button size="sm" className={vehicle.status === 'Disponible' ? '' : 'opacity-50'} 
+                              disabled={vehicle.status !== 'Disponible'}>
+                        Assigner
+                      </Button>
                     </div>
                   </div>
                 </div>

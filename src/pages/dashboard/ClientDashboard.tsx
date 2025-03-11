@@ -13,12 +13,15 @@ import {
   Clock, 
   AlertTriangle, 
   Check,
-  Search,
   CheckCircle2,
   Calendar,
   Filter,
   MapPin,
-  Building
+  Building,
+  Search,
+  Star,
+  Users,
+  PhoneCall
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
@@ -26,8 +29,8 @@ import { cn } from '@/lib/utils';
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 // Theme colors - using the primary color from the theme
-const CHART_BLUE = 'hsl(var(--primary))';
-const LIGHT_BLUE = 'hsl(var(--primary) / 0.2)';
+const CHART_COLOR = 'hsl(var(--primary))';
+const CHART_COLOR_LIGHT = 'hsl(var(--primary) / 0.2)';
 
 // Dummy data for metrics
 const metricsData = {
@@ -82,7 +85,8 @@ const activeBookings = [
     date: '16 Mai 2024',
     time: '07:30',
     status: 'Confirmé',
-    transportCompany: 'Trans Express'
+    transportCompany: 'Trans Express',
+    phone: '+33 1 23 45 67 89'
   },
   {
     id: 'BK-12351',
@@ -92,7 +96,8 @@ const activeBookings = [
     date: '16 Mai 2024',
     time: '09:00',
     status: 'En Route',
-    transportCompany: 'Rungis Logistics'
+    transportCompany: 'Rungis Logistics',
+    phone: '+33 1 98 76 54 32'
   },
   {
     id: 'BK-12352',
@@ -102,7 +107,8 @@ const activeBookings = [
     date: '17 Mai 2024',
     time: '06:45',
     status: 'Confirmé',
-    transportCompany: 'Trans Express'
+    transportCompany: 'Trans Express',
+    phone: '+33 1 23 45 67 89'
   }
 ];
 
@@ -114,7 +120,8 @@ const availableVehicles = [
     capacity: '2.5 tonnes',
     price: '250 €/jour',
     company: 'Trans Express',
-    rating: 4.8
+    rating: 4.8,
+    distance: '2.3 km'
   },
   {
     id: 'VH-102',
@@ -122,7 +129,8 @@ const availableVehicles = [
     capacity: '1.2 tonnes',
     price: '180 €/jour',
     company: 'Rungis Logistics',
-    rating: 4.6
+    rating: 4.6,
+    distance: '1.5 km'
   },
   {
     id: 'VH-103',
@@ -130,7 +138,8 @@ const availableVehicles = [
     capacity: '800 kg',
     price: '120 €/jour',
     company: 'Trans Express',
-    rating: 4.7
+    rating: 4.7,
+    distance: '3.1 km'
   },
   {
     id: 'VH-104',
@@ -138,7 +147,8 @@ const availableVehicles = [
     capacity: '3 tonnes',
     price: '220 €/jour',
     company: 'Rungis Transport',
-    rating: 4.9
+    rating: 4.9,
+    distance: '0.8 km'
   }
 ];
 
@@ -200,8 +210,8 @@ const ClientDashboard = () => {
                   <BarChart data={bookingHistoryData}>
                     <defs>
                       <linearGradient id="colorBookingsClient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={CHART_BLUE} stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor={LIGHT_BLUE} stopOpacity={0.8}/>
+                        <stop offset="5%" stopColor={CHART_COLOR} stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor={CHART_COLOR_LIGHT} stopOpacity={0.8}/>
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -224,15 +234,15 @@ const ClientDashboard = () => {
                   <AreaChart data={spendingTrendData}>
                     <defs>
                       <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={CHART_BLUE} stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor={LIGHT_BLUE} stopOpacity={0.8}/>
+                        <stop offset="5%" stopColor={CHART_COLOR} stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor={CHART_COLOR_LIGHT} stopOpacity={0.8}/>
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <XAxis dataKey="day" axisLine={false} tickLine={false} />
                     <YAxis axisLine={false} tickLine={false} />
                     <Tooltip />
-                    <Area type="monotone" dataKey="amount" stroke={CHART_BLUE} fillOpacity={1} fill="url(#colorAmount)" />
+                    <Area type="monotone" dataKey="amount" stroke={CHART_COLOR} fillOpacity={1} fill="url(#colorAmount)" />
                   </AreaChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -285,8 +295,8 @@ const ClientDashboard = () => {
                   <BarChart data={bookingHistoryData}>
                     <defs>
                       <linearGradient id="colorBookingsClientWeekly" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={CHART_BLUE} stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor={LIGHT_BLUE} stopOpacity={0.8}/>
+                        <stop offset="5%" stopColor={CHART_COLOR} stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor={CHART_COLOR_LIGHT} stopOpacity={0.8}/>
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -309,15 +319,15 @@ const ClientDashboard = () => {
                   <AreaChart data={spendingTrendData}>
                     <defs>
                       <linearGradient id="colorAmountWeekly" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={CHART_BLUE} stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor={LIGHT_BLUE} stopOpacity={0.8}/>
+                        <stop offset="5%" stopColor={CHART_COLOR} stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor={CHART_COLOR_LIGHT} stopOpacity={0.8}/>
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <XAxis dataKey="day" axisLine={false} tickLine={false} />
                     <YAxis axisLine={false} tickLine={false} />
                     <Tooltip />
-                    <Area type="monotone" dataKey="amount" stroke={CHART_BLUE} fillOpacity={1} fill="url(#colorAmountWeekly)" />
+                    <Area type="monotone" dataKey="amount" stroke={CHART_COLOR} fillOpacity={1} fill="url(#colorAmountWeekly)" />
                   </AreaChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -370,8 +380,8 @@ const ClientDashboard = () => {
                   <BarChart data={bookingHistoryData}>
                     <defs>
                       <linearGradient id="colorBookingsClientMonthly" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={CHART_BLUE} stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor={LIGHT_BLUE} stopOpacity={0.8}/>
+                        <stop offset="5%" stopColor={CHART_COLOR} stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor={CHART_COLOR_LIGHT} stopOpacity={0.8}/>
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -394,15 +404,15 @@ const ClientDashboard = () => {
                   <AreaChart data={spendingTrendData}>
                     <defs>
                       <linearGradient id="colorAmountMonthly" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={CHART_BLUE} stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor={LIGHT_BLUE} stopOpacity={0.8}/>
+                        <stop offset="5%" stopColor={CHART_COLOR} stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor={CHART_COLOR_LIGHT} stopOpacity={0.8}/>
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <XAxis dataKey="day" axisLine={false} tickLine={false} />
                     <YAxis axisLine={false} tickLine={false} />
                     <Tooltip />
-                    <Area type="monotone" dataKey="amount" stroke={CHART_BLUE} fillOpacity={1} fill="url(#colorAmountMonthly)" />
+                    <Area type="monotone" dataKey="amount" stroke={CHART_COLOR} fillOpacity={1} fill="url(#colorAmountMonthly)" />
                   </AreaChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -414,8 +424,8 @@ const ClientDashboard = () => {
       {/* Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Active Bookings - Redesigned */}
-        <Card className="shadow-md overflow-hidden">
-          <CardHeader className="bg-primary/5 pb-2">
+        <Card className="overflow-hidden">
+          <CardHeader className="bg-primary/5">
             <div className="flex justify-between items-center">
               <div>
                 <CardTitle className="text-xl">Vos Transports</CardTitle>
@@ -431,62 +441,52 @@ const ClientDashboard = () => {
           <CardContent className="p-0">
             <div className="divide-y">
               {activeBookings.map((booking) => (
-                <div key={booking.id} className="hover:bg-muted/10 transition-colors">
-                  <div className="p-4">
-                    <div className="flex justify-between items-center mb-2">
+                <div key={booking.id} className="p-4 hover:bg-muted/10 transition-colors">
+                  <div className="flex flex-col gap-2">
+                    <div className="flex justify-between items-center">
                       <div className="flex items-center gap-2">
-                        <div className={cn(
-                          "p-2 rounded-full",
-                          booking.status === 'Confirmé' ? "bg-amber-500/10" : 
-                          booking.status === 'En Route' ? "bg-primary/10" : 
-                          "bg-green-500/10"
+                        <Badge className={cn(
+                          booking.status === 'Confirmé' ? "bg-amber-500" : 
+                          booking.status === 'En Route' ? "bg-primary" : 
+                          "bg-green-500"
                         )}>
-                          {booking.status === 'Confirmé' ? 
-                            <Clock className={cn("h-4 w-4", "text-amber-500")} /> : 
-                            booking.status === 'En Route' ?
-                            <Truck className="h-4 w-4 text-primary" /> :
-                            <Check className="h-4 w-4 text-green-500" />
-                          }
-                        </div>
-                        <div>
-                          <span className="font-medium">{booking.id}</span>
-                          <Badge className={cn(
-                            "ml-2",
-                            booking.status === 'Confirmé' ? "bg-amber-500" : 
-                            booking.status === 'En Route' ? "bg-primary" : 
-                            "bg-green-500"
-                          )}>
-                            {booking.status}
-                          </Badge>
-                        </div>
+                          {booking.status}
+                        </Badge>
+                        <span className="font-medium">{booking.id}</span>
                       </div>
+                      <div className="text-sm text-muted-foreground">
+                        {booking.date} • {booking.time}
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-1">
+                      <div className="flex items-center gap-2">
+                        <Truck className="h-4 w-4 text-primary" />
+                        <span>{booking.vehicleType}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Building className="h-4 w-4 text-primary" />
+                        <span>{booking.transportCompany}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-2 text-sm mt-1">
+                      <MapPin className="h-4 w-4 text-primary" />
+                      <span className="text-muted-foreground">De:</span>
+                      <span className="font-medium">{booking.pickup}</span>
+                      <span className="text-muted-foreground mx-1">→</span>
+                      <span className="text-muted-foreground">À:</span>
+                      <span className="font-medium">{booking.dropoff}</span>
+                    </div>
+                    
+                    <div className="flex justify-between items-center mt-2">
+                      <Button variant="outline" size="sm" className="flex items-center">
+                        <PhoneCall className="h-4 w-4 mr-1 text-primary" />
+                        {booking.phone}
+                      </Button>
                       <Button variant="ghost" size="sm" className="text-primary">
                         Suivre
                       </Button>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2 text-sm mt-2">
-                      <div className="flex flex-col">
-                        <span className="text-muted-foreground">Véhicule</span>
-                        <span className="font-medium">{booking.vehicleType}</span>
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-muted-foreground">Date & Heure</span>
-                        <span className="font-medium">{booking.date} · {booking.time}</span>
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-muted-foreground">Transporteur</span>
-                        <span className="font-medium flex items-center">
-                          <Building className="h-3.5 w-3.5 mr-1" />
-                          {booking.transportCompany}
-                        </span>
-                      </div>
-                      <div className="flex flex-col col-span-2">
-                        <span className="text-muted-foreground">Trajet</span>
-                        <span className="font-medium flex items-center">
-                          <MapPin className="h-3.5 w-3.5 mr-1 text-primary" />
-                          {booking.pickup} → {booking.dropoff}
-                        </span>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -504,8 +504,8 @@ const ClientDashboard = () => {
         </Card>
         
         {/* Available Vehicles - Redesigned */}
-        <Card className="shadow-md overflow-hidden">
-          <CardHeader className="bg-primary/5 pb-2">
+        <Card className="overflow-hidden">
+          <CardHeader className="bg-primary/5">
             <div className="flex justify-between items-center">
               <div>
                 <CardTitle className="text-xl">Véhicules Disponibles</CardTitle>
@@ -517,43 +517,57 @@ const ClientDashboard = () => {
                 </Link>
               </Button>
             </div>
-            <div className="flex items-center space-x-2 mt-2">
+            <div className="flex items-center space-x-2 mt-3">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <input
                   type="text"
                   placeholder="Rechercher par type, capacité..."
-                  className="w-full rounded-full h-9 pl-9 pr-4 border border-input"
+                  className="w-full rounded-md h-9 pl-9 pr-4 border border-input"
                 />
               </div>
-              <Button variant="outline" size="sm" className="h-9 rounded-full">
+              <Button variant="outline" size="sm" className="h-9">
                 <Filter className="h-4 w-4 mr-1" />
                 Filtrer
               </Button>
             </div>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-0">
+            <div className="divide-y">
               {availableVehicles.map((vehicle) => (
-                <div key={vehicle.id} className="p-4 border-b sm:border-r hover:bg-muted/10 transition-colors">
-                  <div className="flex items-start mb-2">
-                    <div className="p-2 rounded-full bg-primary/10 mt-0.5 mr-3">
-                      <Truck className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <h4 className="font-medium">{vehicle.type}</h4>
-                      <p className="text-sm text-muted-foreground">{vehicle.company}</p>
-                      <div className="flex items-center mt-1 text-sm">
-                        <span className="mr-2 text-muted-foreground">{vehicle.capacity}</span>
-                        <Badge variant="outline" className="bg-green-50 text-green-600 border-green-200">
-                          Disponible
-                        </Badge>
+                <div key={vehicle.id} className="p-4 hover:bg-muted/10 transition-colors">
+                  <div className="flex justify-between">
+                    <div className="space-y-2">
+                      <div className="flex items-center">
+                        <Truck className="h-5 w-5 text-primary mr-2" />
+                        <div>
+                          <h4 className="font-medium">{vehicle.type}</h4>
+                          <div className="flex items-center gap-2 text-sm">
+                            <span className="text-muted-foreground">{vehicle.capacity}</span>
+                            <span className="text-primary font-medium">{vehicle.price}</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center gap-3 text-sm">
+                        <div className="flex items-center">
+                          <Building className="h-4 w-4 text-muted-foreground mr-1" />
+                          <span>{vehicle.company}</span>
+                        </div>
+                        <div className="flex items-center">
+                          <MapPin className="h-4 w-4 text-muted-foreground mr-1" />
+                          <span>{vehicle.distance}</span>
+                        </div>
+                        <div className="flex items-center text-amber-500">
+                          <Star className="h-4 w-4 mr-1 fill-amber-500" />
+                          <span>{vehicle.rating}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="flex justify-between items-center mt-2">
-                    <div className="font-medium text-primary">{vehicle.price}</div>
-                    <Button size="sm">Réserver</Button>
+                    
+                    <div className="flex items-center">
+                      <Button size="sm">Réserver</Button>
+                    </div>
                   </div>
                 </div>
               ))}
