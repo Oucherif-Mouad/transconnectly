@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import TransportDashboard from '@/pages/dashboard/TransportDashboard';
@@ -20,15 +19,12 @@ export const RoleBasedRouter: React.FC<RoleBasedRouterProps> = ({
   const location = useLocation();
   
   // Redirect to login if there's no role (not authenticated)
-  // This is just placeholder logic - real auth would be more complex
   if (!USER_ROLE) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // Return the appropriate component based on user role
-  return USER_ROLE === 'transport' 
-    ? <>{React.createElement(transportComponent)}</> 
-    : <>{React.createElement(clientComponent)}</>;
+  // Return the appropriate redirect based on user role
+  return <Navigate to={USER_ROLE === 'transport' ? '/transporteur' : '/client'} replace />;
 };
 
 // Pre-configured components for dashboard routing
