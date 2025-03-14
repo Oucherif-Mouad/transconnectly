@@ -21,16 +21,18 @@ import {
   Search,
   Star,
   Users,
-  PhoneCall
+  PhoneCall,
+  ChartBar
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
 
-// Theme colors - using the primary color from the theme
+// Theme colors
 const CHART_COLOR = 'hsl(var(--primary))';
 const CHART_COLOR_LIGHT = 'hsl(var(--primary) / 0.2)';
+const CHART_COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#0088fe'];
 
 // Dummy data for metrics
 const metricsData = {
@@ -65,14 +67,21 @@ const bookingHistoryData = [
   { day: 'Dim', bookings: 0 },
 ];
 
-const spendingTrendData = [
-  { day: 'Lun', amount: 220 },
-  { day: 'Mar', amount: 330 },
-  { day: 'Mer', amount: 110 },
-  { day: 'Jeu', amount: 220 },
-  { day: 'Ven', amount: 440 },
-  { day: 'Sam', amount: 220 },
-  { day: 'Dim', amount: 0 },
+// Delivery Status Data (replacing transport expenses)
+const deliveryStatusData = [
+  { name: 'En cours', value: 4 },
+  { name: 'Livré', value: 8 },
+  { name: 'Planifié', value: 3 },
+  { name: 'Retardé', value: 1 },
+];
+
+// Customer satisfaction data
+const satisfactionData = [
+  { month: 'Jan', score: 4.2 },
+  { month: 'Fév', score: 4.3 },
+  { month: 'Mar', score: 4.1 },
+  { month: 'Avr', score: 4.5 },
+  { month: 'Mai', score: 4.7 },
 ];
 
 // Dummy data for bookings
@@ -224,30 +233,67 @@ const ClientDashboard = () => {
               </CardContent>
             </Card>
             
+            {/* Replace Transport Expenses with Delivery Status */}
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg">Dépenses Transport</CardTitle>
-                <CardDescription>Montant dépensé par jour (€)</CardDescription>
+                <CardTitle className="text-lg">État des Livraisons</CardTitle>
+                <CardDescription>Statut actuel de vos commandes</CardDescription>
               </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={200}>
-                  <AreaChart data={spendingTrendData}>
-                    <defs>
-                      <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={CHART_COLOR} stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor={CHART_COLOR_LIGHT} stopOpacity={0.8}/>
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="day" axisLine={false} tickLine={false} />
-                    <YAxis axisLine={false} tickLine={false} />
-                    <Tooltip />
-                    <Area type="monotone" dataKey="amount" stroke={CHART_COLOR} fillOpacity={1} fill="url(#colorAmount)" />
-                  </AreaChart>
-                </ResponsiveContainer>
+              <CardContent className="flex items-center justify-center">
+                <div className="w-full flex flex-col items-center">
+                  <ResponsiveContainer width="100%" height={200}>
+                    <PieChart>
+                      <Pie
+                        data={deliveryStatusData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                        label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                      >
+                        {deliveryStatusData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="flex flex-wrap justify-center gap-3 mt-2">
+                    {deliveryStatusData.map((entry, index) => (
+                      <div key={index} className="flex items-center">
+                        <div 
+                          className="w-3 h-3 rounded-full mr-1" 
+                          style={{ backgroundColor: CHART_COLORS[index % CHART_COLORS.length] }} 
+                        />
+                        <span className="text-xs">{entry.name}: {entry.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>
+
+          {/* Add Customer Satisfaction Chart */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg">Satisfaction Client</CardTitle>
+              <CardDescription>Évolution mensuelle des notes de satisfaction</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={200}>
+                <LineChart data={satisfactionData}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis dataKey="month" axisLine={false} tickLine={false} />
+                  <YAxis domain={[3, 5]} axisLine={false} tickLine={false} />
+                  <Tooltip />
+                  <Line type="monotone" dataKey="score" stroke="#8884d8" strokeWidth={2} activeDot={{ r: 8 }} />
+                </LineChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
         </TabsContent>
         
         <TabsContent value="weekly" className="space-y-4">
@@ -283,7 +329,7 @@ const ClientDashboard = () => {
             />
           </div>
           
-          {/* Weekly Charts - using same components but would have different data in real app */}
+          {/* Weekly Charts */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <Card>
               <CardHeader className="pb-2">
@@ -309,30 +355,67 @@ const ClientDashboard = () => {
               </CardContent>
             </Card>
             
+            {/* Delivery Status Weekly */}
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg">Dépenses Transport</CardTitle>
-                <CardDescription>Montant dépensé par jour cette semaine (€)</CardDescription>
+                <CardTitle className="text-lg">État des Livraisons</CardTitle>
+                <CardDescription>Statut actuel de vos commandes</CardDescription>
               </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={200}>
-                  <AreaChart data={spendingTrendData}>
-                    <defs>
-                      <linearGradient id="colorAmountWeekly" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={CHART_COLOR} stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor={CHART_COLOR_LIGHT} stopOpacity={0.8}/>
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="day" axisLine={false} tickLine={false} />
-                    <YAxis axisLine={false} tickLine={false} />
-                    <Tooltip />
-                    <Area type="monotone" dataKey="amount" stroke={CHART_COLOR} fillOpacity={1} fill="url(#colorAmountWeekly)" />
-                  </AreaChart>
-                </ResponsiveContainer>
+              <CardContent className="flex items-center justify-center">
+                <div className="w-full flex flex-col items-center">
+                  <ResponsiveContainer width="100%" height={200}>
+                    <PieChart>
+                      <Pie
+                        data={deliveryStatusData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                        label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                      >
+                        {deliveryStatusData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="flex flex-wrap justify-center gap-3 mt-2">
+                    {deliveryStatusData.map((entry, index) => (
+                      <div key={index} className="flex items-center">
+                        <div 
+                          className="w-3 h-3 rounded-full mr-1" 
+                          style={{ backgroundColor: CHART_COLORS[index % CHART_COLORS.length] }} 
+                        />
+                        <span className="text-xs">{entry.name}: {entry.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>
+
+          {/* Customer Satisfaction Weekly */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg">Satisfaction Client</CardTitle>
+              <CardDescription>Évolution mensuelle des notes de satisfaction</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={200}>
+                <LineChart data={satisfactionData}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis dataKey="month" axisLine={false} tickLine={false} />
+                  <YAxis domain={[3, 5]} axisLine={false} tickLine={false} />
+                  <Tooltip />
+                  <Line type="monotone" dataKey="score" stroke="#8884d8" strokeWidth={2} activeDot={{ r: 8 }} />
+                </LineChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
         </TabsContent>
         
         <TabsContent value="monthly" className="space-y-4">
@@ -394,30 +477,67 @@ const ClientDashboard = () => {
               </CardContent>
             </Card>
             
+            {/* Delivery Status Monthly */}
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg">Dépenses Transport</CardTitle>
-                <CardDescription>Montant dépensé par semaine ce mois (€)</CardDescription>
+                <CardTitle className="text-lg">État des Livraisons</CardTitle>
+                <CardDescription>Statut actuel de vos commandes</CardDescription>
               </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={200}>
-                  <AreaChart data={spendingTrendData}>
-                    <defs>
-                      <linearGradient id="colorAmountMonthly" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={CHART_COLOR} stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor={CHART_COLOR_LIGHT} stopOpacity={0.8}/>
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="day" axisLine={false} tickLine={false} />
-                    <YAxis axisLine={false} tickLine={false} />
-                    <Tooltip />
-                    <Area type="monotone" dataKey="amount" stroke={CHART_COLOR} fillOpacity={1} fill="url(#colorAmountMonthly)" />
-                  </AreaChart>
-                </ResponsiveContainer>
+              <CardContent className="flex items-center justify-center">
+                <div className="w-full flex flex-col items-center">
+                  <ResponsiveContainer width="100%" height={200}>
+                    <PieChart>
+                      <Pie
+                        data={deliveryStatusData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                        label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                      >
+                        {deliveryStatusData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="flex flex-wrap justify-center gap-3 mt-2">
+                    {deliveryStatusData.map((entry, index) => (
+                      <div key={index} className="flex items-center">
+                        <div 
+                          className="w-3 h-3 rounded-full mr-1" 
+                          style={{ backgroundColor: CHART_COLORS[index % CHART_COLORS.length] }} 
+                        />
+                        <span className="text-xs">{entry.name}: {entry.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>
+
+          {/* Customer Satisfaction Monthly */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg">Satisfaction Client</CardTitle>
+              <CardDescription>Évolution mensuelle des notes de satisfaction</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={200}>
+                <LineChart data={satisfactionData}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis dataKey="month" axisLine={false} tickLine={false} />
+                  <YAxis domain={[3, 5]} axisLine={false} tickLine={false} />
+                  <Tooltip />
+                  <Line type="monotone" dataKey="score" stroke="#8884d8" strokeWidth={2} activeDot={{ r: 8 }} />
+                </LineChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
       

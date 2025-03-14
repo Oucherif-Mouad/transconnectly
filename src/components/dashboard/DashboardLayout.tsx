@@ -3,36 +3,24 @@ import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Link, useLocation } from 'react-router-dom';
 import { 
-  LayoutDashboard, 
-  CalendarDays, 
-  Truck, 
-  Wallet, 
-  Settings,
   Menu,
   X,
   Bell,
   ChevronRight,
-  User
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { useNavigation } from './NavigationContext';
 
 type DashboardLayoutProps = {
   children: React.ReactNode;
 };
 
-const navigation = [
-  { name: 'Tableau de Bord', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Réservations', href: '/dashboard/bookings', icon: CalendarDays },
-  { name: 'Véhicules', href: '/dashboard/vehicles', icon: Truck },
-  { name: 'Revenus', href: '/dashboard/earnings', icon: Wallet },
-  { name: 'Paramètres', href: '/dashboard/settings', icon: Settings },
-];
-
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
+  const { navigation, role } = useNavigation();
 
   return (
     <div className="h-screen flex overflow-hidden bg-background">
@@ -102,11 +90,15 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             <div className="flex items-center">
               <Avatar>
                 <AvatarImage src="/placeholder.svg" />
-                <AvatarFallback>RT</AvatarFallback>
+                <AvatarFallback>{role === 'transport' ? 'TR' : 'CL'}</AvatarFallback>
               </Avatar>
               <div className="ml-3">
-                <p className="text-sm font-medium text-sidebar-foreground">Transport Rungis</p>
-                <p className="text-xs text-sidebar-foreground/60">transporteur@rungis.fr</p>
+                <p className="text-sm font-medium text-sidebar-foreground">
+                  {role === 'transport' ? 'Transport Rungis' : 'Client Rungis'}
+                </p>
+                <p className="text-xs text-sidebar-foreground/60">
+                  {role === 'transport' ? 'transporteur@rungis.fr' : 'client@rungis.fr'}
+                </p>
               </div>
             </div>
           </div>
@@ -128,10 +120,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             </Button>
             <div className="ml-2 md:ml-0">
               <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                <Link to="/dashboard" className="hover:text-foreground">
+                <Link to={role === 'transport' ? '/transporteur' : '/client'} className="hover:text-foreground">
                   Tableau de Bord
                 </Link>
-                {location.pathname !== '/dashboard' && (
+                {location.pathname !== '/transporteur' && location.pathname !== '/client' && (
                   <>
                     <ChevronRight className="h-4 w-4" />
                     <span className="text-foreground font-medium">
@@ -149,7 +141,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             </Button>
             <Avatar className="h-8 w-8">
               <AvatarImage src="/placeholder.svg" />
-              <AvatarFallback>RT</AvatarFallback>
+              <AvatarFallback>{role === 'transport' ? 'TR' : 'CL'}</AvatarFallback>
             </Avatar>
           </div>
         </header>

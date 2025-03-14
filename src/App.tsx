@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,6 +18,7 @@ import Vehicles from "./pages/dashboard/Vehicles";
 import Earnings from "./pages/dashboard/Earnings";
 import Settings from "./pages/dashboard/Settings";
 import { RoleBasedRouter } from "./components/dashboard/RoleBasedRouter";
+import { NavigationProvider } from "./components/dashboard/NavigationContext";
 
 const queryClient = new QueryClient();
 
@@ -34,19 +36,26 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           
-          {/* Transport Routes */}
-          <Route path="/transporteur" element={<TransportDashboard />} />
-          <Route path="/dashboard/vehicles" element={<Vehicles />} />
-          <Route path="/dashboard/bookings" element={<Bookings />} />
-          <Route path="/dashboard/earnings" element={<Earnings />} />
+          {/* Dashboard Routes - Wrapped with NavigationProvider */}
+          <Route element={<NavigationProvider>
+            {/* The element prop should be empty, as NavigationProvider is just a context wrapper */}
+            <></>
+          </NavigationProvider>}>
+            {/* Transport Routes */}
+            <Route path="/transporteur" element={<TransportDashboard />} />
+            <Route path="/dashboard/vehicles" element={<Vehicles />} />
+            <Route path="/dashboard/bookings" element={<Bookings />} />
+            <Route path="/dashboard/earnings" element={<Earnings />} />
+            
+            {/* Client Routes */}
+            <Route path="/client" element={<ClientDashboard />} />
+            <Route path="/dashboard/invoices" element={<Navigate to="/client" replace />} />
+            
+            {/* Shared Routes */}
+            <Route path="/dashboard" element={<RoleBasedRouter />} />
+            <Route path="/dashboard/settings" element={<Settings />} />
+          </Route>
           
-          {/* Client Routes */}
-          <Route path="/client" element={<ClientDashboard />} />
-          <Route path="/dashboard/invoices" element={<Navigate to="/client" replace />} />
-          
-          {/* Shared Routes */}
-          <Route path="/dashboard" element={<RoleBasedRouter />} />
-          <Route path="/dashboard/settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

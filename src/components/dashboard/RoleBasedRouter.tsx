@@ -23,24 +23,3 @@ export const RoleBasedRouter = () => {
   // Return the appropriate dashboard based on user role
   return <Navigate to={userRole === 'transport' ? '/transporteur' : '/client'} replace />;
 };
-
-// Navigation items based on role
-export const getNavigationByRole = (role: 'transport' | 'client') => {
-  if (role === 'transport') {
-    return [
-      { name: 'Tableau de Bord', href: '/transporteur', icon: 'LayoutDashboard' },
-      { name: 'Véhicules', href: '/dashboard/vehicles', icon: 'Truck' },
-      { name: 'Réservations', href: '/dashboard/bookings', icon: 'CalendarCheck' },
-      { name: 'Revenus', href: '/dashboard/earnings', icon: 'Wallet' },
-      { name: 'Paramètres', href: '/dashboard/settings', icon: 'Settings' },
-    ];
-  }
-
-  // Client navigation
-  return [
-    { name: 'Tableau de Bord', href: '/client', icon: 'LayoutDashboard' },
-    { name: 'Réservations', href: '/dashboard/bookings', icon: 'CalendarCheck' },
-    { name: 'Factures', href: '/dashboard/invoices', icon: 'Receipt' },
-    { name: 'Paramètres', href: '/dashboard/settings', icon: 'Settings' },
-  ];
-};
